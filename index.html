@@ -103,16 +103,16 @@
         <div class="max-w-7xl mx-auto px-6 text-center">
             <h1
                 class="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight tracking-tighter">
-                The Auth Engine for <br> <span class="gradient-text">High-Efficiency</span> Teams
+                The <span class="gradient-text">Open Source</span> Auth Engine
             </h1>
             <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 mb-10 leading-relaxed">
-                Framework-agnostic. Database-independent. Native Zod support.
-                Everything you need to build secure authentication in minutes, not months.
+                Framework-agnostic. Database-independent. Simple by design.
+                Authentication that stays out of your way so you can focus on building what matters.
             </p>
             <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
-                <a href="#install"
+                <a href="docs.html"
                     class="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-brand-600 to-indigo-600 text-white rounded-2xl font-bold text-lg hover:scale-105 transition-transform duration-300 shadow-lg shadow-brand-500/20">
-                    Get Started
+                    Read Documentation
                 </a>
                 <div
                     class="flex items-center space-x-3 bg-dark-800 px-6 py-4 rounded-2xl border border-gray-800 font-mono text-sm group">
@@ -135,7 +135,7 @@
     <section id="features" class="py-24 bg-dark-800/50">
         <div class="max-w-7xl mx-auto px-6 text-center mb-16">
             <h2 class="font-heading text-4xl md:text-5xl font-bold text-white mb-4">Why Kroxt?</h2>
-            <p class="text-gray-400">Built for 2026's tech stack requirements.</p>
+            <p class="text-gray-400">Built for the modern web with a focus on simplicity.</p>
         </div>
 
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -165,8 +165,8 @@
                     </svg>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Hardened Security</h3>
-                <p class="text-gray-400 leading-relaxed">Industry-standard Argon2id hashing and jose-powered JWT
-                    signing. Built with a security-first mindset.</p>
+                <p class="text-gray-400 leading-relaxed">Refresh tokens, password peppering, and timing attack
+                    protection. Industry-standard protection for your users.</p>
             </div>
 
             <!-- Feature 3 -->
@@ -185,99 +185,20 @@
         </div>
     </section>
 
-    <!-- Usage Snippet -->
-    <section id="usage" class="py-24">
-        <div class="max-w-7xl mx-auto px-6 mb-16 text-center">
-            <h2 class="font-heading text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">Full <span
-                    class="gradient-text">Express.js</span> Integration</h2>
-            <p class="text-gray-400 max-w-2xl mx-auto">See how Kroxt plugs into a real Express server with Mongoose.</p>
-        </div>
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="p-4 rounded-3xl bg-dark-800 border border-gray-700 shadow-2xl overflow-hidden group space-y-4">
-
-                <!-- Step 1: User Model -->
-                <div class="border border-gray-700/50 rounded-xl overflow-hidden">
-                    <div class="bg-dark-900 px-4 py-2 flex items-center justify-between border-b border-gray-700/50">
-                        <span class="text-xs font-mono text-gray-400">1. Define User (models.ts)</span>
-                    </div>
-                    <div
-                        class="font-mono text-sm leading-relaxed overflow-x-auto p-4 bg-dark-800/50 h-[150px] custom-scrollbar">
-                        <pre
-                            class="text-gray-300"><span class="text-pink-500">import</span> mongoose <span class="text-pink-500">from</span> <span class="text-green-500">"mongoose"</span>;
-
-<span class="text-pink-500">const</span> <span class="text-white">userSchema</span> = <span class="text-pink-500">new</span> <span class="text-white">mongoose</span>.<span class="text-brand-500">Schema</span>({
-  email: { type: <span class="text-pink-500">String</span>, required: <span class="text-pink-500">true</span>, unique: <span class="text-pink-500">true</span> },
-  passwordHash: { type: <span class="text-pink-500">String</span> },
-  firstName: { type: <span class="text-pink-500">String</span> },
-  nin: { type: <span class="text-pink-500">String</span> } <span class="text-gray-500">// Native extended field!</span>
-});
-
-<span class="text-pink-500">export const</span> <span class="text-white">User</span> = <span class="text-white">mongoose</span>.<span class="text-brand-500">model</span>(<span class="text-green-500">"User"</span>, userSchema);</pre>
-                    </div>
-                </div>
-
-                <!-- Step 2: Adapter -->
-                <div class="border border-gray-700/50 rounded-xl overflow-hidden">
-                    <div class="bg-dark-900 px-4 py-2 flex items-center justify-between border-b border-gray-700/50">
-                        <span class="text-xs font-mono text-gray-400">2. Create Adapter (adapter.ts)</span>
-                    </div>
-                    <div
-                        class="font-mono text-sm leading-relaxed overflow-x-auto p-4 bg-dark-800/50 h-[400px] custom-scrollbar">
-                        <pre class="text-gray-300"><span class="text-pink-500">import type</span> { AuthAdapter } <span class="text-pink-500">from</span> <span class="text-green-500">"kroxt/adapter"</span>;
-<span class="text-pink-500">import</span> { User } <span class="text-pink-500">from</span> <span class="text-green-500">"./models.js"</span>;
-
-<span class="text-gray-500">// This is where you connect the `auth-lib` to MongoDB.</span>
-<span class="text-pink-500">export const</span> <span class="text-white">mongoAdapter</span>: <span class="text-white">AuthAdapter</span>&lt;<span class="text-pink-500">any</span>&gt; = {
-  <span class="text-brand-500">createUser</span>: <span class="text-pink-500">async</span> (data: <span class="text-pink-500">any</span>) => {
-    <span class="text-pink-500">const</span> newUser = <span class="text-pink-500">await</span> User.<span class="text-brand-500">create</span>(data);
-    <span class="text-pink-500">return</span> {
-      id: newUser._id.<span class="text-brand-500">toString</span>(),
-      email: newUser.email,
-      passwordHash: newUser.passwordHash,
-      role: newUser.role,
-      ...newUser.<span class="text-brand-500">toObject</span>(),
-    };
-  },
-  
-  <span class="text-brand-500">findUserByEmail</span>: <span class="text-pink-500">async</span> (email: <span class="text-pink-500">string</span>) => {
-    <span class="text-pink-500">const</span> user = <span class="text-pink-500">await</span> User.<span class="text-brand-500">findOne</span>({ email });
-    <span class="text-pink-500">if</span> (!user) <span class="text-pink-500">return null</span>;
-    <span class="text-pink-500">return</span> { id: user._id.<span class="text-brand-500">toString</span>(), ...user.<span class="text-brand-500">toObject</span>() };
-  },
-
-  <span class="text-brand-500">findUserById</span>: <span class="text-pink-500">async</span> (id: <span class="text-pink-500">string</span>) => {
-    <span class="text-pink-500">const</span> user = <span class="text-pink-500">await</span> User.<span class="text-brand-500">findById</span>(id);
-    <span class="text-pink-500">if</span> (!user) <span class="text-pink-500">return null</span>;
-    <span class="text-pink-500">return</span> { id: user._id.<span class="text-brand-500">toString</span>(), ...user.<span class="text-brand-500">toObject</span>() };
-  },
-
-  <span class="text-brand-500">linkOAuthAccount</span>: <span class="text-pink-500">async</span> (userId: <span class="text-pink-500">string</span>, provider: <span class="text-pink-500">string</span>, providerId: <span class="text-pink-500">string</span>) => {
-    <span class="text-built-in">console</span>.<span class="text-brand-500">log</span>(<span class="text-green-500">`[MongoAdapter] Linked OAuth account ${providerId} from ${provider} to ${userId}`</span>);
-  }
-};</pre>
-                    </div>
-                </div>
-
-                <!-- Step 3: Initialize Engine -->
-                <div class="border border-gray-700/50 rounded-xl overflow-hidden">
-                    <div class="bg-dark-900 px-4 py-2 flex items-center justify-between border-b border-gray-700/50">
-                        <span class="text-xs font-mono text-gray-400">3. Initialize Engine (index.ts)</span>
-                    </div>
-                    <div
-                        class="font-mono text-sm leading-relaxed overflow-x-auto p-4 bg-dark-800/50 h-[180px] custom-scrollbar">
-                        <pre class="text-gray-300"><span class="text-pink-500">import</span> { createAuth } <span class="text-pink-500">from</span> <span class="text-green-500">"kroxt"</span>;
-<span class="text-pink-500">import</span> { mongoAdapter } <span class="text-pink-500">from</span> <span class="text-green-500">"./adapter.js"</span>;
-
-<span class="text-pink-500">const</span> <span class="text-white">auth</span> = <span class="text-brand-500">createAuth</span>({
-    adapter: mongoAdapter,
-    secret: <span class="text-green-500">"my-super-secret-mongo-key-123"</span>,
-    session: { expires: <span class="text-green-500">"7d"</span> }
-});
-
-<span class="text-gray-500">// Ready! auth.signup(), auth.loginWithPassword() 🚀</span></pre>
-                    </div>
-                </div>
-            </div>
+    <!-- Quick Links -->
+    <section id="usage" class="py-24 border-t border-gray-800/20">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h2 class="font-heading text-4xl font-bold text-white mb-6">Ready to deep dive?</h2>
+            <p class="text-gray-400 mb-10 max-w-xl mx-auto">Explore our step-by-step guide to get Kroxt running in your
+                application in minutes.</p>
+            <a href="docs.html"
+                class="inline-flex items-center space-x-3 text-brand-500 font-bold text-xl hover:text-brand-400 transition-colors">
+                <span>Go to Documentation</span>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3">
+                    </path>
+                </svg>
+            </a>
         </div>
     </section>
 
@@ -305,33 +226,27 @@
   role?: <span class="text-pink-500">string</span>;
 }
 
-<span class="text-gray-500">// Supports any extended fields (nin, bvn, role, etc.)</span>
+<span class="text-gray-500">// Supports any extended fields</span>
 <span class="text-pink-500">export type</span> <span class="text-white">User</span>&lt;<span class="text-white">TExtended</span> = <span class="text-white">Record</span>&lt;<span class="text-pink-500">string</span>, <span class="text-pink-500">any</span>&gt;&gt; = <span class="text-white">BaseUser</span> & <span class="text-white">TExtended</span>;
 
 <span class="text-pink-500">export interface</span> <span class="text-white">AuthAdapter</span>&lt;<span class="text-white">TUser</span> = <span class="text-white">User</span>&gt; {
   <span class="text-brand-500">createUser</span>: (data: <span class="text-pink-500">any</span>) => <span class="text-white">Promise</span>&lt;<span class="text-white">TUser</span>&gt;;
   <span class="text-brand-500">findUserByEmail</span>: (email: <span class="text-pink-500">string</span>) => <span class="text-white">Promise</span>&lt;<span class="text-white">TUser</span> | <span class="text-pink-500">null</span>&gt;;
   <span class="text-brand-500">findUserById</span>: (id: <span class="text-pink-500">string</span>) => <span class="text-white">Promise</span>&lt;<span class="text-white">TUser</span> | <span class="text-pink-500">null</span>&gt;;
-  <span class="text-brand-500">linkOAuthAccount</span>: (uId: <span class="text-pink-500">string</span>, p: <span class="text-pink-500">string</span>, pId: <span class="text-pink-500">string</span>) => <span class="text-white">Promise</span>&lt;<span class="text-pink-500">void</span>&gt;;
 }</pre>
                 </div>
-                <div class="font-mono text-sm leading-relaxed overflow-x-auto p-4 custom-scrollbar h-[500px]">
+                <div class="font-mono text-sm leading-relaxed overflow-x-auto p-4 custom-scrollbar h-[400px]">
                     <div class="text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest"><span
                             class="w-2 h-2 inline-block bg-indigo-500 rounded-full mr-2"></span>Mongoose Implementation
                     </div>
                     <pre class="text-gray-300"><span class="text-pink-500">import type</span> { AuthAdapter } <span class="text-pink-500">from</span> <span class="text-green-500">"kroxt/adapter"</span>;
 <span class="text-pink-500">import</span> { User } <span class="text-pink-500">from</span> <span class="text-green-500">"./models.js"</span>;
 
-<span class="text-gray-500">// This is where you connect the `auth-lib` to MongoDB.</span>
 <span class="text-pink-500">export const</span> <span class="text-white">mongoAdapter</span>: <span class="text-white">AuthAdapter</span>&lt;<span class="text-pink-500">any</span>&gt; = {
     <span class="text-brand-500">createUser</span>: <span class="text-pink-500">async</span> (data: <span class="text-pink-500">any</span>) => {
-        <span class="text-gray-500">// The lib will pass { email, passwordHash, firstName, nin, ... }</span>
         <span class="text-pink-500">const</span> newUser = <span class="text-pink-500">await</span> User.<span class="text-brand-500">create</span>(data);
         <span class="text-pink-500">return</span> {
             id: newUser._id.<span class="text-brand-500">toString</span>(),
-            email: newUser.email,
-            passwordHash: newUser.passwordHash,
-            role: newUser.role,
             ...newUser.<span class="text-brand-500">toObject</span>(),
         };
     },
@@ -346,11 +261,6 @@
         <span class="text-pink-500">const</span> user = <span class="text-pink-500">await</span> User.<span class="text-brand-500">findById</span>(id);
         <span class="text-pink-500">if</span> (!user) <span class="text-pink-500">return null</span>;
         <span class="text-pink-500">return</span> { id: user._id.<span class="text-brand-500">toString</span>(), ...user.<span class="text-brand-500">toObject</span>() };
-    },
-
-    <span class="text-brand-500">linkOAuthAccount</span>: <span class="text-pink-500">async</span> (userId: <span class="text-pink-500">string</span>, provider: <span class="text-pink-500">string</span>, providerId: <span class="text-pink-500">string</span>) => {
-        <span class="text-built-in">console</span>.<span class="text-brand-500">log</span>(<span class="text-green-500">`[MongoAdapter] Linked OAuth account ${providerId} from ${provider} to ${userId}`</span>);
-        <span class="text-gray-500">// Assume an Account model exists for OAuth tokens</span>
     }
 };</pre>
                 </div>
@@ -376,7 +286,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
                             </path>
                         </svg>
-                        <span>OAuth 2.0 Account Linking built-in</span>
+                        <span>OAuth 2.0 Account Linking ready</span>
                     </li>
                     <li class="flex items-center space-x-3">
                         <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -393,9 +303,10 @@
     <!-- Footer -->
     <footer id="install" class="py-20 border-t border-gray-800/50">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="font-heading text-4xl font-bold text-white mb-6">Ready to scale?</h2>
+            <h2 class="font-heading text-4xl font-bold text-white mb-6">Ready to ship?</h2>
             <div class="max-w-md mx-auto mb-10">
-                <p class="text-gray-400 mb-8 font-medium italic">"The fastest way to add auth to any project, period."
+                <p class="text-gray-400 mb-8 font-medium italic">"Built for myself, shared for developers who just want
+                    to get things done."
                 </p>
                 <div class="flex flex-col space-y-4">
                     <a href="https://www.npmjs.com/package/kroxt" target="_blank"
@@ -405,9 +316,9 @@
             </div>
             <div
                 class="text-gray-600 text-sm pt-20 border-t border-gray-800/10 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                <p>© 2026 Kroxt Auth. Built for the modern web.</p>
+                <p>© 2026 Kroxt Auth. Released under the <span class="text-white">MIT License</span>.</p>
                 <div class="flex space-x-6">
-                    <a href="#" class="hover:text-white transition-colors">Documentation</a>
+                    <a href="docs.html" class="hover:text-white transition-colors">Documentation</a>
                     <a href="#" class="hover:text-white transition-colors">Privacy</a>
                     <a href="#" class="hover:text-white transition-colors">Twitter</a>
                 </div>
