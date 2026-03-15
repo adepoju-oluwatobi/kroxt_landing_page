@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kroxt | Modular Auth Engine</title>
+    <title>kroxt | The Modular Auth Engine</title>
     <meta name="description"
         content="A framework-agnostic, modular authentication engine for modern TypeScript applications.">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,16 +21,17 @@
                     },
                     colors: {
                         brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            900: '#0c4a6e',
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            900: '#1e3a8a',
                         },
                         dark: {
-                            900: '#030712',
-                            800: '#111827',
-                            700: '#1f2937',
+                            950: '#030712',
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
                         }
                     }
                 }
@@ -38,301 +39,291 @@
         }
     </script>
     <style>
-        .glass {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        :root {
+            --glow-color: rgba(59, 130, 246, 0.05);
         }
 
-        .gradient-text {
-            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            background-image: 
+                radial-gradient(circle at top left, var(--glow-color) 0%, transparent 40%),
+                radial-gradient(circle at bottom right, var(--glow-color) 0%, transparent 40%);
+            background-attachment: fixed;
         }
 
-        .animate-gradient {
-            background-size: 200% 200%;
-            animation: gradient-move 8s ease infinite;
+        .sidebar-link {
+            transition: all 0.2s;
+            color: #94a3b8;
         }
 
-        @keyframes gradient-move {
-            0% {
-                background-position: 0% 50%;
+        .sidebar-link:hover {
+            color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .sidebar-link.active {
+            color: #3b82f6;
+            font-weight: 600;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .code-block {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
             }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
+            .sidebar.open {
+                transform: translateX(0);
             }
         }
     </style>
 </head>
 
-<body class="bg-dark-900 text-gray-300 font-sans selection:bg-brand-500 selection:text-white">
+<body class="font-sans selection:bg-brand-500 selection:text-white">
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 w-full z-50 glass">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div
-                    class="w-10 h-10 bg-gradient-to-tr from-brand-500 to-indigo-500 rounded-xl flex items-center justify-center font-heading font-bold text-white text-xl">
-                    k</div>
-                <span class="font-heading font-bold text-2xl text-white tracking-tight">kroxt</span>
+    <!-- Mobile Header -->
+    <header class="md:hidden fixed top-0 w-full bg-dark-900/80 backdrop-blur-md border-b border-dark-800 z-50 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
             </div>
-            <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
-                <a href="#features" class="hover:text-brand-500 transition-colors">Features</a>
-                <a href="#install" class="hover:text-brand-500 transition-colors">Install</a>
-                <a href="#usage" class="hover:text-brand-500 transition-colors">Usage</a>
-                <a href="https://github.com/adepoju-oluwatobi/kroxt" target="_blank"
-                    class="px-5 py-2 bg-white text-dark-900 rounded-full font-bold hover:bg-brand-500 hover:text-white transition-all duration-300">GitHub</a>
-            </div>
+            <span class="font-heading font-bold text-xl text-white">kroxt</span>
         </div>
-    </nav>
+        <button id="menu-toggle" class="p-2 text-slate-400 hover:text-brand-500 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
 
-    <!-- Hero Section -->
-    <section class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
-        <!-- Background Orbs -->
-        <div class="absolute top-0 -left-20 w-96 h-96 bg-brand-600/20 rounded-full filter blur-[100px] -z-10"></div>
-        <div class="absolute bottom-40 -right-20 w-96 h-96 bg-indigo-600/20 rounded-full filter blur-[100px] -z-10">
-        </div>
-
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h1
-                class="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight tracking-tighter">
-                The <span class="gradient-text">Open Source</span> Auth Engine
-            </h1>
-            <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 mb-10 leading-relaxed">
-                Framework-agnostic. Database-independent. Simple by design.
-                Authentication that stays out of your way so you can focus on building what matters.
-            </p>
-            <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
-                <a href="docs.html"
-                    class="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-brand-600 to-indigo-600 text-white rounded-2xl font-bold text-lg hover:scale-105 transition-transform duration-300 shadow-lg shadow-brand-500/20">
-                    Read Documentation
-                </a>
-                <a href="https://github.com/adepoju-oluwatobi/kroxt-example" target="_blank"
-                    class="w-full md:w-auto px-8 py-4 bg-dark-800 text-white border border-gray-700 rounded-2xl font-bold text-lg hover:bg-dark-700 transition-all duration-300">
-                    View Example
-                </a>
-                <div
-                    class="flex items-center space-x-3 bg-dark-800 px-6 py-4 rounded-2xl border border-gray-800 font-mono text-sm group">
-                    <span class="text-brand-500">$</span>
-                    <span class="text-gray-300">npm install kroxt</span>
-                    <button class="ml-4 hover:text-white transition-colors"
-                        onclick="navigator.clipboard.writeText('npm install kroxt')">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2">
-                            </path>
-                        </svg>
-                    </button>
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar fixed top-0 left-0 h-screen w-72 bg-dark-950 border-r border-dark-800 z-40 transition-transform duration-300 md:translate-x-0 overflow-y-auto custom-scrollbar">
+        <div class="p-8">
+            <div class="flex items-center space-x-3 mb-12">
+                <div class="w-10 h-10 bg-brand-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-500/20">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features -->
-    <section id="features" class="py-24 bg-dark-800/50">
-        <div class="max-w-7xl mx-auto px-6 text-center mb-16">
-            <h2 class="font-heading text-4xl md:text-5xl font-bold text-white mb-4">Why Kroxt?</h2>
-            <p class="text-gray-400">Built for the modern web with a focus on simplicity.</p>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Feature 1 -->
-            <div class="p-8 rounded-3xl glass hover:bg-dark-700/50 transition-colors duration-300 group">
-                <div
-                    class="w-14 h-14 bg-brand-500/10 rounded-2xl flex items-center justify-center text-brand-500 mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
-                        </path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-3">Modular Adapters</h3>
-                <p class="text-gray-400 leading-relaxed">Prisma, Mongoose, Drizzle? Plug in any database by implementing
-                    a simple interface. We don't lock you in.</p>
+                <span class="font-heading font-bold text-2xl text-white tracking-tight">kroxt /></span>
             </div>
 
-            <!-- Feature 2 -->
-            <div class="p-8 rounded-3xl glass hover:bg-dark-700/50 transition-colors duration-300 group text-white">
-                <div
-                    class="w-14 h-14 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-indigo-500 mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.040L3 20c1.323.059 2.628.329 3.87.802L12 23l5.13-2.198c1.242-.473 2.547-.743 3.87-.802l-.618-14.016z">
-                        </path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold mb-3">Hardened Security</h3>
-                <p class="text-gray-400 leading-relaxed">Refresh tokens, password peppering, and timing attack
-                    protection. Industry-standard protection for your users.</p>
-            </div>
-
-            <!-- Feature 3 -->
-            <div class="p-8 rounded-3xl glass hover:bg-dark-700/50 transition-colors duration-300 group">
-                <div
-                    class="w-14 h-14 bg-pink-500/10 rounded-2xl flex items-center justify-center text-pink-500 mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-3">Zod Native</h3>
-                <p class="text-gray-400 leading-relaxed">Type-safe configuration and schema-agnostic user meta handling.
-                    Perfectly maps your custom Zod schemas.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quick Links -->
-    <section id="usage" class="py-24 border-t border-gray-800/20">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="font-heading text-4xl font-bold text-white mb-6">Ready to deep dive?</h2>
-            <p class="text-gray-400 mb-10 max-w-xl mx-auto">Explore our step-by-step guide to get Kroxt running in your
-                application in minutes.</p>
-            <a href="docs.html"
-                class="inline-flex items-center space-x-3 text-brand-500 font-bold text-xl hover:text-brand-400 transition-colors">
-                <span>Go to Documentation</span>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3">
-                    </path>
-                </svg>
-            </a>
-        </div>
-    </section>
-
-    <!-- Sample Adapter Section -->
-    <section id="adapter" class="py-24 bg-dark-800/30">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div
-                class="p-4 rounded-3xl bg-dark-800 border border-gray-700 shadow-2xl overflow-hidden group order-2 lg:order-1">
-                <div class="flex justify-between items-center mb-4 px-2">
-                    <div class="flex space-x-2">
-                        <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+            <nav class="space-y-8">
+                <div>
+                    <h5 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 px-3">Engine</h5>
+                    <div class="space-y-1">
+                        <a href="#hero" class="sidebar-link active block px-3 py-2 rounded-lg text-sm">Introduction</a>
+                        <a href="#features" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">Why Kroxt?</a>
+                        <a href="#security" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">Security First</a>
                     </div>
-                    <span class="text-xs font-mono text-gray-500 italic">kroxt/adapter</span>
                 </div>
-                <div
-                    class="font-mono text-sm leading-relaxed overflow-x-auto p-4 custom-scrollbar h-[300px] mb-4 border-b border-gray-800">
-                    <div class="text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest"><span
-                            class="w-2 h-2 inline-block bg-brand-500 rounded-full mr-2"></span>The Core Interface</div>
-                    <pre class="text-gray-300"><span class="text-pink-500">export interface</span> <span class="text-white">BaseUser</span> {
-  id: <span class="text-pink-500">string</span>;
-  email: <span class="text-pink-500">string</span>;
-  passwordHash?: <span class="text-pink-500">string</span>;
-  role?: <span class="text-pink-500">string</span>;
-}
 
-<span class="text-gray-500">// Supports any extended fields</span>
-<span class="text-pink-500">export type</span> <span class="text-white">User</span>&lt;<span class="text-white">TExtended</span> = <span class="text-white">Record</span>&lt;<span class="text-pink-500">string</span>, <span class="text-pink-500">any</span>&gt;&gt; = <span class="text-white">BaseUser</span> & <span class="text-white">TExtended</span>;
-
-<span class="text-pink-500">export interface</span> <span class="text-white">AuthAdapter</span>&lt;<span class="text-white">TUser</span> = <span class="text-white">User</span>&gt; {
-  <span class="text-brand-500">createUser</span>: (data: <span class="text-pink-500">any</span>) => <span class="text-white">Promise</span>&lt;<span class="text-white">TUser</span>&gt;;
-  <span class="text-brand-500">findUserByEmail</span>: (email: <span class="text-pink-500">string</span>) => <span class="text-white">Promise</span>&lt;<span class="text-white">TUser</span> | <span class="text-pink-500">null</span>&gt;;
-  <span class="text-brand-500">findUserById</span>: (id: <span class="text-pink-500">string</span>) => <span class="text-white">Promise</span>&lt;<span class="text-white">TUser</span> | <span class="text-pink-500">null</span>&gt;;
-}</pre>
-                </div>
-                <div class="font-mono text-sm leading-relaxed overflow-x-auto p-4 custom-scrollbar h-[400px]">
-                    <div class="text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest"><span
-                            class="w-2 h-2 inline-block bg-indigo-500 rounded-full mr-2"></span>Mongoose Implementation
+                <div>
+                    <h5 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 px-3">Getting Started</h5>
+                    <div class="space-y-1">
+                        <a href="docs.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">Installation</a>
+                        <a href="docs.html#quickstart" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">Quick Start</a>
+                        <a href="https://github.com/adepoju-oluwatobi/kroxt-example" target="_blank" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400 flex items-center justify-between">
+                            Example Project
+                            <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
                     </div>
-                    <pre class="text-gray-300"><span class="text-pink-500">import type</span> { AuthAdapter } <span class="text-pink-500">from</span> <span class="text-green-500">"kroxt/adapter"</span>;
-<span class="text-pink-500">import</span> { User } <span class="text-pink-500">from</span> <span class="text-green-500">"./models.js"</span>;
-
-<span class="text-pink-500">export const</span> <span class="text-white">mongoAdapter</span>: <span class="text-white">AuthAdapter</span>&lt;<span class="text-pink-500">any</span>&gt; = {
-    <span class="text-brand-500">createUser</span>: <span class="text-pink-500">async</span> (data: <span class="text-pink-500">any</span>) => {
-        <span class="text-pink-500">const</span> newUser = <span class="text-pink-500">await</span> User.<span class="text-brand-500">create</span>(data);
-        <span class="text-pink-500">return</span> {
-            id: newUser._id.<span class="text-brand-500">toString</span>(),
-            ...newUser.<span class="text-brand-500">toObject</span>(),
-        };
-    },
-
-    <span class="text-brand-500">findUserByEmail</span>: <span class="text-pink-500">async</span> (email: <span class="text-pink-500">string</span>) => {
-        <span class="text-pink-500">const</span> user = <span class="text-pink-500">await</span> User.<span class="text-brand-500">findOne</span>({ email });
-        <span class="text-pink-500">if</span> (!user) <span class="text-pink-500">return null</span>;
-        <span class="text-pink-500">return</span> { id: user._id.<span class="text-brand-500">toString</span>(), ...user.<span class="text-brand-500">toObject</span>() };
-    },
-
-    <span class="text-brand-500">findUserById</span>: <span class="text-pink-500">async</span> (id: <span class="text-pink-500">string</span>) => {
-        <span class="text-pink-500">const</span> user = <span class="text-pink-500">await</span> User.<span class="text-brand-500">findById</span>(id);
-        <span class="text-pink-500">if</span> (!user) <span class="text-pink-500">return null</span>;
-        <span class="text-pink-500">return</span> { id: user._id.<span class="text-brand-500">toString</span>(), ...user.<span class="text-brand-500">toObject</span>() };
-    }
-};</pre>
                 </div>
-            </div>
-            <div class="order-1 lg:order-2">
-                <h2 class="font-heading text-4xl font-bold text-white mb-6 leading-tight">Infinite <br><span
-                        class="gradient-text">Schema Flexibility</span></h2>
-                <p class="text-gray-400 mb-8 leading-relaxed">
-                    Kroxt's <strong>AuthAdapter</strong> is designed for the modern web. Whether you need custom roles,
-                    NIN, or identity verification fields, the TUser generic ensures your data stays typed and accessible
-                    across your entire app.
-                </p>
-                <ul class="space-y-4 text-gray-300">
-                    <li class="flex items-center space-x-3">
-                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
-                            </path>
-                        </svg>
-                        <span>Native extended field support</span>
-                    </li>
-                    <li class="flex items-center space-x-3">
-                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
-                            </path>
-                        </svg>
-                        <span>OAuth 2.0 Account Linking ready</span>
-                    </li>
-                    <li class="flex items-center space-x-3">
-                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
-                            </path>
-                        </svg>
-                        <span>Type-safe generic User model</span>
-                    </li>
-                </ul>
-            </div>
+
+                <div>
+                    <h5 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 px-3">Community</h5>
+                    <div class="space-y-1">
+                        <a href="https://github.com/adepoju-oluwatobi/kroxt" target="_blank" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">GitHub</a>
+                        <a href="https://www.npmjs.com/package/kroxt" target="_blank" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">NPM Package</a>
+                    </div>
+                </div>
+            </nav>
         </div>
-    </section>
+    </aside>
 
-    <!-- Footer -->
-    <footer id="install" class="py-20 border-t border-gray-800/50">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="font-heading text-4xl font-bold text-white mb-6">Ready to ship?</h2>
-            <div class="max-w-md mx-auto mb-10">
-                <p class="text-gray-400 mb-8 font-medium italic">"Built for myself, shared for developers who just want
-                    to get things done."
+    <!-- Main Content -->
+    <main class="md:ml-72 min-h-screen pt-24 md:pt-0">
+        <div class="max-w-4xl mx-auto px-6 py-12 md:py-24">
+            
+            <!-- Hero -->
+            <section id="hero" class="mb-32">
+                <h1 class="font-heading text-6xl md:text-8xl font-black text-white mb-8 leading-[1.1] tracking-tighter">
+                    The Headless <br><span class="text-brand-500">Auth Engine.</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-2xl mb-12">
+                    A framework-agnostic, modular authentication engine for modern TypeScript applications. Stay in control of your data and your UI.
                 </p>
-                <div class="flex flex-col space-y-4">
-                    <a href="https://www.npmjs.com/package/kroxt" target="_blank"
-                        class="px-8 py-5 bg-white text-dark-900 rounded-3xl font-bold hover:bg-brand-500 hover:text-white transition-all transform hover:-translate-y-1 text-center">View
-                        on NPM</a>
-                    <a href="https://github.com/adepoju-oluwatobi/kroxt-example" target="_blank"
-                        class="px-8 py-5 bg-dark-800 text-white border border-gray-700 rounded-3xl font-bold hover:bg-dark-700 transition-all transform hover:-translate-y-1 text-center">View
-                        Example on GitHub</a>
+                <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                    <a href="docs.html" class="w-full sm:w-auto px-8 py-4 bg-brand-500 text-white rounded-xl font-bold text-lg hover:bg-brand-600 transition-all shadow-lg shadow-brand-500/25 text-center">
+                        Get Started
+                    </a>
+                    <div class="flex items-center space-x-3 bg-dark-800 px-6 py-4 rounded-xl border border-dark-700 font-mono text-sm w-full sm:w-auto">
+                        <span class="text-brand-500">$</span>
+                        <span class="text-slate-300">npm i kroxt</span>
+                    </div>
                 </div>
-            </div>
-            <div
-                class="text-gray-600 text-sm pt-20 border-t border-gray-800/10 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                <p>© 2026 Kroxt Auth. Released under the <span class="text-white">MIT License</span>.</p>
-                <div class="flex space-x-6">
-                    <a href="docs.html" class="hover:text-white transition-colors">Documentation</a>
-                    <a href="#" class="hover:text-white transition-colors">Privacy</a>
-                    <a href="#" class="hover:text-white transition-colors">Twitter</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+            </section>
 
+            <!-- Philosophy -->
+            <section id="features" class="mb-32">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div>
+                        <h2 class="font-heading text-3xl font-bold text-white mb-4 text-white">Framework Agnostic</h2>
+                        <p class="text-slate-400 leading-relaxed">
+                            Kroxt doesn't care if you use Express, Next.js, Fastify, or Hono. It provides the core logic, you decide the transport.
+                        </p>
+                    </div>
+                    <div>
+                        <h2 class="font-heading text-3xl font-bold text-white mb-4 text-white">Modular Adapters</h2>
+                        <p class="text-slate-400 leading-relaxed">
+                            Bring your own database. Implement a simple interface and Kroxt handles the rest. Support for Prisma, Mongoose, Drizzle, and more.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Code Showcase -->
+            <section class="mb-32 text-white">
+                <div class="code-block p-6 md:p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-dark-700"></div>
+                            <div class="w-3 h-3 rounded-full bg-dark-700"></div>
+                            <div class="w-3 h-3 rounded-full bg-dark-700"></div>
+                        </div>
+                        <span class="text-xs font-mono text-slate-500">auth.ts</span>
+                    </div>
+                    <pre class="font-mono text-sm md:text-base leading-relaxed overflow-x-auto text-slate-300">
+<span class="text-brand-500">export const</span> <span class="text-brand-100">auth</span> = createAuth({
+  adapter: <span class="text-brand-100">mongoAdapter</span>,
+  secret: process.env.<span class="text-brand-100">JWT_SECRET</span>,
+  session: {
+    expires: <span class="text-brand-500">"15m"</span>,
+    refreshExpires: <span class="text-brand-500">"7d"</span>
+  }
+});</pre>
+                </div>
+            </section>
+
+            <!-- Security Checkmarks -->
+            <section id="security" class="mb-32 py-16 border-y border-dark-800">
+                <h2 class="font-heading text-4xl font-black text-white mb-12">Built-in Security.</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div class="flex items-start space-x-4">
+                        <div class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white mb-1">Argon2 + Pepper</h4>
+                            <p class="text-sm text-slate-400">Industry leading hashing with hardware-locked pepper support.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white mb-1">Timing Attack Protection</h4>
+                            <p class="text-sm text-slate-400">Constant-time comparisons and simulated delays for failed logins.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white mb-1">Token Rotation</h4>
+                            <p class="text-sm text-slate-400">Automatic refresh token rotation to prevent replay attacks.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white mb-1">Zod Validation</h4>
+                            <p class="text-sm text-slate-400">Type-safe configuration and user data validation out of the box.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="text-slate-500 text-sm">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <p>© 2026 Kroxt. Released under the <span class="text-white font-medium">MIT License</span>.</p>
+                    <div class="flex space-x-6">
+                        <a href="https://github.com/adepoju-oluwatobi/kroxt" class="hover:text-brand-500 transition-colors">GitHub</a>
+                        <a href="https://www.npmjs.com/package/kroxt" class="hover:text-brand-500 transition-colors">NPM</a>
+                        <a href="docs.html" class="hover:text-brand-500 transition-colors">Documentation</a>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Close sidebar on link click (mobile)
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        });
+
+        // Scroll highlight
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.sidebar-link');
+
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (current && link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Default to first link if at top
+            if (window.pageYOffset < 150 && navLinks[0]) {
+                navLinks[0].classList.add('active');
+            }
+        });
+
+        // Initialize on load
+        window.dispatchEvent(new Event('scroll'));
+    </script>
 </body>
 
 </html>
