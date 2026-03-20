@@ -128,7 +128,7 @@
                     <h5 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 px-3">Engine</h5>
                     <div class="space-y-1">
                         <a href="#hero" class="sidebar-link active block px-3 py-2 rounded-lg text-sm">Introduction</a>
-                        <a href="#features" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">Why Kroxt?</a>
+                        <a href="#how-it-works" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">How it Works</a>
                         <a href="#security" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">Security First</a>
                     </div>
                 </div>
@@ -179,44 +179,94 @@
                 </div>
             </section>
 
-            <!-- Philosophy -->
-            <section id="features" class="mb-32">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <div>
-                        <h2 class="font-heading text-3xl font-bold text-white mb-4 text-white">Framework Agnostic</h2>
-                        <p class="text-slate-400 leading-relaxed">
-                            Kroxt doesn't care if you use Express, Next.js, Fastify, or Hono. It provides the core logic, you decide the transport.
-                        </p>
-                    </div>
-                    <div>
-                        <h2 class="font-heading text-3xl font-bold text-white mb-4 text-white">Modular Adapters</h2>
-                        <p class="text-slate-400 leading-relaxed">
-                            Bring your own database. Implement a simple interface and Kroxt handles the rest. Support for Prisma, Mongoose, Drizzle, and more.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Code Showcase -->
-            <section class="mb-32 text-white">
-                <div class="code-block p-6 md:p-8">
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex space-x-2">
-                            <div class="w-3 h-3 rounded-full bg-dark-700"></div>
-                            <div class="w-3 h-3 rounded-full bg-dark-700"></div>
-                            <div class="w-3 h-3 rounded-full bg-dark-700"></div>
+            <!-- How it Works -->
+            <section id="how-it-works" class="mb-32">
+                <h2 class="font-heading text-4xl font-black text-white mb-12 text-center">How it Works.</h2>
+                
+                <div class="space-y-20">
+                    <!-- Step 1 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <div class="w-12 h-12 bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center font-bold mb-6">1</div>
+                            <h3 class="font-heading text-3xl font-bold text-white mb-4">Define your User</h3>
+                            <p class="text-slate-400 leading-relaxed text-lg">
+                                Start by defining what your user looks like. Kroxt is fully extensible—add <b>roles</b>, <b>school IDs</b>, or <b>metadata</b> with full type safety.
+                            </p>
                         </div>
-                        <span class="text-xs font-mono text-slate-500">auth.ts</span>
+                        <div class="code-block p-6 text-sm">
+                            <pre class="font-mono text-slate-300">
+<span class="text-emerald-500">interface</span> <span class="text-brand-100">MyUser</span> {
+  id: <span class="text-emerald-500">string</span>;
+  email: <span class="text-emerald-500">string</span>;
+  role: <span class="text-brand-500">'admin' | 'user'</span>;
+  schoolId: <span class="text-emerald-500">string</span>;
+}</pre>
+                        </div>
                     </div>
-                    <pre class="font-mono text-sm md:text-base leading-relaxed overflow-x-auto text-slate-300">
-<span class="text-brand-500">export const</span> <span class="text-brand-100">auth</span> = createAuth({
-  adapter: <span class="text-brand-100">mongoAdapter</span>,
-  secret: process.env.<span class="text-brand-100">JWT_SECRET</span>,
-  session: {
-    expires: <span class="text-brand-500">"15m"</span>,
-    refreshExpires: <span class="text-brand-500">"7d"</span>
+
+                    <!-- Step 2 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div class="order-2 md:order-1">
+                            <div class="code-block p-6 text-sm">
+                                <pre class="font-mono text-slate-300">
+<span class="text-emerald-500">const</span> <span class="text-brand-100">adapter</span>: AuthAdapter = {
+  createUser: <span class="text-emerald-500">async</span> (data) => {
+    <span class="text-slate-500">// Save to your DB...</span>
+  },
+  findUserByEmail: <span class="text-emerald-500">async</span> (e) => {
+    <span class="text-slate-500">// Find in your DB...</span>
+  }
+};</pre>
+                            </div>
+                        </div>
+                        <div class="order-1 md:order-2">
+                            <div class="w-12 h-12 bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center font-bold mb-6">2</div>
+                            <h3 class="font-heading text-3xl font-bold text-white mb-4">Create the Adapter</h3>
+                            <p class="text-slate-400 leading-relaxed text-lg">
+                                Implement a simple interface to connect Kroxt to your database. Mongoose, Prisma, Drizzle—it works with everything.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <div class="w-12 h-12 bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center font-bold mb-6">3</div>
+                            <h3 class="font-heading text-3xl font-bold text-white mb-4">Hook it Up</h3>
+                            <p class="text-slate-400 leading-relaxed text-lg">
+                                Initialize the engine with your adapter. Use the <code>jwt.payload</code> hook to sign custom user data into your tokens.
+                            </p>
+                        </div>
+                        <div class="code-block p-6 text-sm">
+                            <pre class="font-mono text-slate-300">
+<span class="text-emerald-500">export const</span> <span class="text-brand-100">auth</span> = createAuth({
+  adapter,
+  jwt: {
+    payload: (user, type) => ({
+      schoolId: user.schoolId
+    })
   }
 });</pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div class="order-2 md:order-1">
+                            <div class="code-block p-6 text-sm">
+                                <pre class="font-mono text-slate-300">
+<span class="text-emerald-500">const</span> { accessToken } = <span class="text-emerald-500">await</span> auth.<span class="text-brand-500">signup</span>(data, pwd);
+<span class="text-emerald-500">const</span> payload = <span class="text-emerald-500">await</span> auth.<span class="text-brand-500">verifyToken</span>(token);</pre>
+                            </div>
+                        </div>
+                        <div class="order-1 md:order-2">
+                            <div class="w-12 h-12 bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center font-bold mb-6">4</div>
+                            <h3 class="font-heading text-3xl font-bold text-white mb-4">Ship with Confidence</h3>
+                            <p class="text-slate-400 leading-relaxed text-lg">
+                                Use robust methods for signup, login, token rotation, and verification. Kroxt handles hashing, salts, and JWT security for you.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -258,6 +308,15 @@
                         <div>
                             <h4 class="font-bold text-white mb-1">Zod Validation</h4>
                             <p class="text-sm text-slate-400">Type-safe configuration and user data validation out of the box.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white mb-1">Custom JWT Payloads</h4>
+                            <p class="text-sm text-slate-400">Sign custom user details into the token without losing type safety.</p>
                         </div>
                     </div>
                 </div>
