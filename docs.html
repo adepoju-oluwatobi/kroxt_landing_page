@@ -98,6 +98,26 @@
             margin-right: 12px;
         }
 
+        .tab-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .tab-btn.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .tab-btn:not(.active):hover {
+            color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
         .custom-scrollbar::-webkit-scrollbar {
             width: 4px;
         }
@@ -154,7 +174,7 @@
                     <h5 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 px-3">Engine</h5>
                     <div class="space-y-1">
                         <a href="index.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm">Introduction</a>
-                        <a href="index.html#features" class="sidebar-link block px-3 py-2 rounded-lg text-sm">Why Kroxt?</a>
+                        <a href="#newbie" class="sidebar-link block px-3 py-2 rounded-lg text-sm">🐥 Newbie Guide</a>
                     </div>
                 </div>
 
@@ -165,6 +185,7 @@
                         <a href="#adapter" class="sidebar-link block px-3 py-2 rounded-lg text-sm">2. Create Adapter</a>
                         <a href="#config" class="sidebar-link block px-3 py-2 rounded-lg text-sm">3. Initialize Engine</a>
                         <a href="#flows" class="sidebar-link block px-3 py-2 rounded-lg text-sm">4. Auth Flows</a>
+                        <a href="#troubleshoot" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-amber-400 font-medium">Troubleshooting</a>
                     </div>
                 </div>
 
@@ -185,10 +206,37 @@
             
             <header class="mb-16">
                 <h1 class="font-heading text-4xl md:text-5xl font-black text-white mb-4">Documentation</h1>
-                <p class="text-lg text-slate-400">Master Kroxt Auth in a few simple steps.</p>
+                <p class="text-lg text-slate-400 italic">"Pure modularity for your authentication engine."</p>
             </header>
 
             <div class="space-y-24">
+                
+                <!-- Jargon Buster -->
+                <section id="newbie" class="p-10 bg-brand-500/5 rounded-3xl border border-brand-500/20 shadow-2xl">
+                    <h3 class="font-heading text-2xl font-bold text-white mb-6 flex items-center">
+                        <span class="mr-3">🐥</span> Jargon Buster
+                    </h3>
+                    <p class="text-slate-400 mb-8 text-sm leading-relaxed">New to backend or auth? Here are some simple explanations for common terms we use.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-5 bg-dark-800 rounded-2xl border border-dark-700">
+                            <h4 class="font-bold text-brand-100 mb-2 text-sm uppercase tracking-wide italic">JWT</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">"JSON Web Token". Think of it as a <b>secure digital pass</b>. Once a user logs in, they carry this token. The server sees it and knows "Aha! This is User #45."</p>
+                        </div>
+                        <div class="p-5 bg-dark-800 rounded-2xl border border-dark-700">
+                            <h4 class="font-bold text-brand-100 mb-2 text-sm uppercase tracking-wide italic">Adapter</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">The "plugin" that connects Kroxt to your database. It translates Kroxt's commands into something MongoDB or PostgreSQL understands.</p>
+                        </div>
+                        <div class="p-5 bg-dark-800 rounded-2xl border border-dark-700">
+                            <h4 class="font-bold text-brand-100 mb-2 text-sm uppercase tracking-wide italic">Hashing</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">Turning a password into a scrambled mess. We NEVER store the actual password. We store the hash and compare it later.</p>
+                        </div>
+                        <div class="p-5 bg-dark-800 rounded-2xl border border-dark-700">
+                            <h4 class="font-bold text-brand-100 mb-2 text-sm uppercase tracking-wide italic">Headless</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">Kroxt doesn't provide the UI (buttons, forms). You build the "head" (the UI) in React/Vue. Kroxt is the "brain" (the logic).</p>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Installation -->
                 <section id="install">
                     <div class="code-block p-4 bg-dark-900 border-dark-800 flex items-center justify-between mb-12">
@@ -210,7 +258,7 @@
                         <h2 class="font-heading text-2xl font-bold text-white">Define your User</h2>
                     </div>
                     <p class="text-slate-400 mb-8 leading-relaxed">
-                        Start by deciding what data you want to store for your users. Kroxt is flexible—you can add any fields like <b>role</b> or <b>schoolId</b>.
+                        Decide what data you want your users to have. Kroxt lets you add any extra fields like <b>role</b> or <b>metadata</b> effortlessly.
                     </p>
                     <div class="code-block">
                         <div class="code-header">types.ts</div>
@@ -221,8 +269,6 @@
   passwordHash: <span class="text-emerald-500">string</span>;
   role: <span class="text-brand-500">'admin' | 'user'</span>;
   schoolId: <span class="text-emerald-500">string</span>;
-  oauthProvider?: <span class="text-emerald-500">string</span>; <span class="text-slate-500">// Support for OAuth</span>
-  oauthId?: <span class="text-emerald-500">string</span>;       <span class="text-slate-500">// ID from provider</span>
 }</pre>
                         </div>
                     </div>
@@ -235,36 +281,59 @@
                         <h2 class="font-heading text-2xl font-bold text-white">Choose an Adapter</h2>
                     </div>
                     <p class="text-slate-400 mb-8 leading-relaxed">
-                        Kroxt provides built-in adapters for major databases. For MongoDB, simply pass your Mongoose model to <code>createMongoAdapter</code>.
+                        Select the adapter for your database. We support the most popular ORMs natively.
                     </p>
-                    <div class="code-block mb-12">
-                        <div class="code-header">lib/adapter.ts</div>
-                        <div class="p-6 overflow-x-auto text-sm leading-relaxed font-mono text-slate-300">
-<pre><span class="text-emerald-500">import</span> { createMongoAdapter } <span class="text-emerald-500">from</span> <span class="text-brand-500">"kroxt/adapters/mongoose"</span>;
-<span class="text-emerald-500">import</span> { User } <span class="text-emerald-500">from</span> <span class="text-brand-500">"../models/user.model.js"</span>;
- 
-<span class="text-emerald-500">export const</span> <span class="text-brand-100">authAdapter</span> = <span class="text-brand-500">createMongoAdapter</span>(User);</pre>
-                        </div>
+
+                    <!-- ORM Tabs -->
+                    <div class="flex space-x-2 mb-8 bg-dark-900/50 p-1 rounded-xl border border-dark-800 w-fit">
+                        <button onclick="switchTab('mongo')" class="tab-btn active" id="btn-mongo">Mongoose</button>
+                        <button onclick="switchTab('drizzle')" class="tab-btn" id="btn-drizzle">Drizzle</button>
+                        <button onclick="switchTab('prisma')" class="tab-btn" id="btn-prisma">Prisma</button>
                     </div>
 
-                    <div id="custom-adapter" class="mt-16 p-10 bg-dark-800/50 rounded-3xl border border-dark-700 shadow-2xl">
-                        <h3 class="text-xl font-bold text-brand-100 mb-4">Building a Custom Adapter</h3>
-                        <p class="text-slate-400 mb-6 text-sm">Need to use <b>Prisma</b>, <b>Drizzle</b>, or a custom API? Simply implement the <code>AuthAdapter</code> interface.</p>
-                        <div class="code-block">
-                            <div class="code-header">customAdapter.ts</div>
-                            <div class="p-6 overflow-x-auto text-xs leading-relaxed font-mono text-slate-400">
-<pre><span class="text-emerald-500">import type</span> { AuthAdapter } <span class="text-emerald-500">from</span> <span class="text-brand-500">"kroxt/adapters"</span>;
+                    <div id="tab-content">
+                        <!-- Mongoose Content -->
+                        <div id="content-mongo" class="tab-pane active">
+                            <div class="code-block">
+                                <div class="code-header">lib/adapter.ts</div>
+                                <div class="p-6 overflow-x-auto text-sm leading-relaxed font-mono text-slate-300">
+<pre><span class="text-emerald-500">import</span> { createMongoAdapter } <span class="text-emerald-500">from</span> <span class="text-brand-500">"kroxt/adapters/mongoose"</span>;
+<span class="text-emerald-500">import</span> { User } <span class="text-emerald-500">from</span> <span class="text-brand-500">"../models/user.model"</span>;
+ 
+<span class="text-emerald-500">export const</span> <span class="text-brand-100">authAdapter</span> = <span class="text-brand-500">createMongoAdapter</span>(User);</pre>
+                                </div>
+                            </div>
+                        </div>
 
-<span class="text-emerald-500">export const</span> <span class="text-brand-100">myCustomAdapter</span>: AuthAdapter&lt;MyUser&gt; = {
-  createUser: <span class="text-emerald-500">async</span> (data) => {
-    <span class="text-slate-500">// Your DB logic here...</span>
-    <span class="text-emerald-500">return</span> { ...user, id: user._id.<span class="text-brand-500">toString</span>() };
-  },
-  findUserByEmail: <span class="text-emerald-500">async</span> (email) => {
-    <span class="text-slate-500">// Your DB logic here...</span>
-  },
-  <span class="text-slate-500">// ...other methods (findUserById, linkOAuthAccount)</span>
-};</pre>
+                        <!-- Drizzle Content -->
+                        <div id="content-drizzle" class="tab-pane hidden">
+                            <div class="code-block">
+                                <div class="code-header">lib/adapter.ts</div>
+                                <div class="p-6 overflow-x-auto text-sm leading-relaxed font-mono text-slate-300">
+<pre><span class="text-emerald-500">import</span> { createDrizzleAdapter } <span class="text-emerald-500">from</span> <span class="text-brand-500">"kroxt/adapters/drizzle"</span>;
+<span class="text-emerald-500">import</span> { eq } <span class="text-emerald-500">from</span> <span class="text-brand-500">"drizzle-orm"</span>;
+<span class="text-emerald-500">import</span> { db } <span class="text-emerald-500">from</span> <span class="text-brand-500">"./db"</span>;
+<span class="text-emerald-500">import</span> { users } <span class="text-emerald-500">from</span> <span class="text-brand-500">"./schema"</span>;
+ 
+<span class="text-emerald-500">export const</span> <span class="text-brand-100">authAdapter</span> = <span class="text-brand-500">createDrizzleAdapter</span>(db, users, eq);</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Prisma Content -->
+                        <div id="content-prisma" class="tab-pane hidden">
+                            <div class="code-block">
+                                <div class="code-header">lib/adapter.ts</div>
+                                <div class="p-6 overflow-x-auto text-sm leading-relaxed font-mono text-slate-300">
+<pre><span class="text-emerald-500">import</span> { createPrismaAdapter } <span class="text-emerald-500">from</span> <span class="text-brand-500">"kroxt/adapters/prisma"</span>;
+<span class="text-emerald-500">import</span> { prisma } <span class="text-emerald-500">from</span> <span class="text-brand-500">"./prisma"</span>;
+ 
+<span class="text-emerald-500">export const</span> <span class="text-brand-100">authAdapter</span> = <span class="text-brand-500">createPrismaAdapter</span>(prisma.user);</pre>
+                                </div>
+                            </div>
+                            <div class="mt-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl">
+                                <p class="text-xs text-amber-200 uppercase font-bold mb-1 italic">Pro-Tip for Windows ESM</p>
+                                <p class="text-xs text-slate-400">If you get "Module not found" with Prisma on Windows in ESM mode, use <code>createRequire</code> for your Prisma client import.</p>
                             </div>
                         </div>
                     </div>
@@ -277,7 +346,7 @@
                         <h2 class="font-heading text-2xl font-bold text-white">Initialize the Engine</h2>
                     </div>
                     <p class="text-slate-400 mb-8 leading-relaxed">
-                        Now, hook up your adapter and set your security keys. This creates the <code>auth</code> object you'll use everywhere.
+                        Finally, create your auth object with your adapter. This is where you set your JWT secret.
                     </p>
                     <div class="code-block">
                         <div class="code-header">lib/auth.ts</div>
@@ -289,9 +358,9 @@
   secret: process.env.<span class="text-brand-100">JWT_SECRET</span>,
   jwt: {
     payload: (user, type) => {
-      <span class="text-slate-500">// Sign custom details into the JWT!</span>
-      <span class="text-emerald-500">if</span> (type === <span class="text-brand-500">"access"</span>) {
-        <span class="text-emerald-500">return</span> { schoolId: user.schoolId, role: user.role };
+      <span class="text-slate-500">// Sign role and school into your tokens</span>
+      <span class="text-emerald-500">if</span> (type === <span class="text-brand-100">"access"</span>) {
+        <span class="text-emerald-500">return</span> { role: user.role, schoolId: user.schoolId };
       }
       <span class="text-emerald-500">return</span> {};
     }
@@ -299,104 +368,47 @@
 });</pre>
                         </div>
                     </div>
+                </section>
 
-                    <div class="mt-8 p-6 bg-brand-500/5 border border-brand-500/20 rounded-2xl">
-                        <h4 class="text-brand-500 font-bold text-sm mb-2 uppercase tracking-wider">CommonJS (CJS) Usage</h4>
-                        <p class="text-slate-400 text-sm mb-4 leading-relaxed">Using a legacy Node.js environment? Kroxt works perfectly with <code>require()</code>.</p>
-                        <div class="code-block bg-dark-950/50">
-                            <div class="p-4 overflow-x-auto text-xs leading-relaxed font-mono text-slate-400">
-<pre><span class="text-emerald-500">const</span> { createAuth } = <span class="text-emerald-500">require</span>(<span class="text-brand-500">"kroxt/core"</span>);
-<span class="text-emerald-500">const</span> { createMongoAdapter } = <span class="text-emerald-500">require</span>(<span class="text-brand-500">"kroxt/adapters/mongoose"</span>);
- 
-<span class="text-emerald-500">const</span> auth = <span class="text-brand-500">createAuth</span>({ adapter: <span class="text-brand-500">createMongoAdapter</span>(User), ... });</pre>
-                            </div>
+                <!-- Troubleshooting -->
+                <section id="troubleshoot" class="pt-16">
+                    <h2 class="font-heading text-3xl font-black text-white mb-10 border-l-4 border-amber-500 pl-6 uppercase tracking-widest italic">Troubleshooting</h2>
+                    <div class="space-y-6">
+                        <div class="bg-dark-800 p-6 rounded-2xl border border-dark-700">
+                            <h4 class="font-bold text-white mb-3 flex items-center">
+                                <span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-3"></span>
+                                Prisma "Unknown argument `name`"
+                            </h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">Prisma is <b>strictly typed</b>. If you are sending fields (like <i>name</i> or <i>age</i>) during registration, they MUST exist in <code>schema.prisma</code> or Prisma will reject the insert.</p>
+                        </div>
+                        <div class="bg-dark-800 p-6 rounded-2xl border border-dark-700">
+                            <h4 class="font-bold text-white mb-3 flex items-center">
+                                <span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-3"></span>
+                                Drizzle Database Locking
+                            </h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">If you use SQLite, only one process can write at a time. If you get "database is locked," ensure you don't have multiple instances of your server running in the background.</p>
+                        </div>
+                        <div class="bg-dark-800 p-6 rounded-2xl border border-dark-700">
+                            <h4 class="font-bold text-white mb-3 flex items-center">
+                                <span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-3"></span>
+                                Path Mismatch: passwordHash
+                            </h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">Kroxt expects your database field to be named <code>passwordHash</code> ideally. If you name it <code>password</code> in your DB, you may need a mapping in your adapter setup.</p>
                         </div>
                     </div>
                 </section>
 
-                <!-- Step 4: Auth Flows -->
-                <section id="flows" class="pt-16">
-                    <div class="flex items-center mb-6">
-                        <span class="step-pill">4</span>
-                        <h2 class="font-heading text-2xl font-bold text-white">Use the Auth Flows</h2>
-                    </div>
-                    <p class="text-slate-400 mb-8 leading-relaxed">
-                        Kroxt provides a set of powerful methods to handle every part of your authentication lifecycle.
-                    </p>
-
-                    <div class="space-y-12">
-                        <!-- Signup/Login -->
-                        <div>
-                            <h3 class="text-lg font-bold text-brand-100 mb-4">1. Registration & Login</h3>
-                            <div class="code-block">
-                                <div class="p-6 overflow-x-auto text-sm leading-relaxed font-mono text-slate-300">
-<pre><span class="text-slate-500">// Register a new user</span>
-<span class="text-emerald-500">const</span> { user, accessToken } = <span class="text-emerald-500">await</span> auth.<span class="text-brand-500">signup</span>(userData, password);
-
-<span class="text-slate-500">// Login an existing user</span>
-<span class="text-emerald-500">const</span> { accessToken, refreshToken } = <span class="text-emerald-500">await</span> auth.<span class="text-brand-500">loginWithPassword</span>(email, password);</pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Middleware -->
-                        <div>
-                            <h3 class="text-lg font-bold text-brand-100 mb-4">2. Protecting Routes (Middleware)</h3>
-                            <p class="text-slate-400 mb-4 text-sm">Use <code>verifyToken</code> to protect your private API endpoints.</p>
-                            <div class="code-block">
-                                <div class="p-6 overflow-x-auto text-sm leading-relaxed font-mono text-slate-300">
-<pre><span class="text-emerald-500">const</span> protect = <span class="text-emerald-500">async</span> (req, res, next) => {
-  <span class="text-emerald-500">const</span> token = req.headers.authorization?.<span class="text-brand-500">split</span>(<span class="text-brand-500">" "</span>)[1];
-  <span class="text-emerald-500">const</span> payload = <span class="text-emerald-500">await</span> auth.<span class="text-brand-500">verifyToken</span>(token, <span class="text-brand-500">"access"</span>);
-  
-  <span class="text-emerald-500">if</span> (!payload) <span class="text-emerald-500">return</span> res.<span class="text-brand-500">status</span>(401).<span class="text-brand-500">json</span>({ error: <span class="text-brand-500">"Unauthorized"</span> });
-  
-  req.user = payload; <span class="text-slate-500">// Contains sub, role, schoolId, etc.</span>
-  <span class="text-brand-500">next</span>();
-};</pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Refresh -->
-                        <div>
-                            <h3 class="text-lg font-bold text-brand-100 mb-4">3. Token Rotation (Refresh)</h3>
-                            <p class="text-slate-400 mb-4 text-sm">Keep users logged in securely by rotating tokens.</p>
-                            <div class="code-block">
-                                <div class="p-6 overflow-x-auto text-sm leading-relaxed font-mono text-slate-300">
-<pre><span class="text-emerald-500">const</span> { accessToken } = <span class="text-emerald-500">await</span> auth.<span class="text-brand-500">refresh</span>(refreshToken);</pre>
-                                </div>
-                            </div>
+                <!-- Footer -->
+                <footer class="mt-32 pt-12 border-t border-dark-800 text-slate-500 text-sm">
+                    <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-center md:text-left">
+                        <p>© 2026 Kroxt. Released under the <span class="text-white font-medium italic">MIT License</span>.</p>
+                        <div class="flex space-x-8">
+                            <a href="https://github.com/adepoju-oluwatobi/kroxt" class="hover:text-brand-500 transition-colors">GitHub</a>
+                            <a href="index.html" class="hover:text-brand-500 transition-colors uppercase font-bold tracking-widest text-xs">Home</a>
                         </div>
                     </div>
-                </section>
-
-                <!-- Example Link -->
-                <section class="p-12 bg-dark-800 rounded-3xl border border-dark-700 text-center">
-                    <h2 class="font-heading text-2xl font-bold text-white mb-4">Ready for a full example?</h2>
-                    <p class="text-slate-400 mb-8">View a complete Express + Mongoose implementation using the Kroxt Service-Controller-Route pattern.</p>
-                    <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
-                        <a href="https://github.com/adepoju-oluwatobi/kroxt-example" target="_blank" class="w-full md:w-auto inline-flex items-center justify-center space-x-2 px-8 py-4 bg-brand-500 text-white rounded-xl font-bold hover:bg-brand-600 transition-all shadow-lg shadow-brand-500/20">
-                            <span>ESM Example</span>
-                        </a>
-                        <a href="https://github.com/adepoju-oluwatobi/kroxt-example-cjs" target="_blank" class="w-full md:w-auto inline-flex items-center justify-center space-x-2 px-8 py-4 bg-dark-700 text-white rounded-xl font-bold hover:bg-dark-600 transition-all border border-dark-600">
-                            <span>CommonJS Example</span>
-                        </a>
-                    </div>
-                </section>
+                </footer>
             </div>
-
-            <!-- Footer -->
-            <footer class="mt-32 pt-12 border-t border-dark-800 text-slate-500 text-sm">
-                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                    <p>© 2026 Kroxt. Released under the <span class="text-white font-medium">MIT License</span>.</p>
-                    <div class="flex space-x-6">
-                        <a href="https://github.com/adepoju-oluwatobi/kroxt" class="hover:text-brand-500 transition-colors">GitHub</a>
-                        <a href="index.html" class="hover:text-brand-500 transition-colors">Home</a>
-                    </div>
-                </div>
-            </footer>
-
         </div>
     </main>
 
@@ -407,6 +419,16 @@
         menuToggle.addEventListener('click', () => {
             sidebar.classList.toggle('open');
         });
+
+        function switchTab(orm) {
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + orm).classList.add('active');
+
+            // Update panes
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.add('hidden'));
+            document.getElementById('content-' + orm).classList.remove('hidden');
+        }
 
         // Close sidebar on link click (mobile)
         document.querySelectorAll('.sidebar-link').forEach(link => {
@@ -436,11 +458,6 @@
                     link.classList.add('active');
                 }
             });
-
-            // Default to first link if at top or no current found
-            if ((window.pageYOffset < 150 || !current) && navLinks[0]) {
-                navLinks[0].classList.add('active');
-            }
         });
 
         // Initialize on load
