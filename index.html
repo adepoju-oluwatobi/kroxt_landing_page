@@ -46,7 +46,7 @@
         body {
             background-color: #0f172a;
             color: #f8fafc;
-            background-image: 
+            background-image:
                 radial-gradient(circle at top left, var(--glow-color) 0%, transparent 40%),
                 radial-gradient(circle at bottom right, var(--glow-color) 0%, transparent 40%);
             background-attachment: fixed;
@@ -72,6 +72,16 @@
             background-color: #1e293b;
             border: 1px solid #334155;
             border-radius: 12px;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .code-block pre {
+            display: block;
+            overflow-x: auto;
+            padding: 1.5rem;
+            width: 100%;
+            line-height: 1.6;
         }
 
         .custom-scrollbar::-webkit-scrollbar {
@@ -91,6 +101,7 @@
             .sidebar {
                 transform: translateX(-100%);
             }
+
             .sidebar.open {
                 transform: translateX(0);
             }
@@ -101,24 +112,37 @@
 <body class="font-sans selection:bg-brand-500 selection:text-white">
 
     <!-- Mobile Header -->
-    <header class="md:hidden fixed top-0 w-full bg-dark-900/80 backdrop-blur-md border-b border-dark-800 z-50 px-6 py-4 flex justify-between items-center">
+    <header
+        class="md:hidden fixed top-0 w-full bg-dark-900/80 backdrop-blur-md border-b border-dark-800 z-50 px-6 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-2">
             <div class="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                        clip-rule="evenodd"></path>
+                </svg>
             </div>
             <span class="font-heading font-bold text-xl text-white">kroxt</span>
         </div>
         <button id="menu-toggle" class="p-2 text-slate-400 hover:text-brand-500 transition-colors">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
         </button>
     </header>
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar fixed top-0 left-0 h-screen w-72 bg-dark-950 border-r border-dark-800 z-40 transition-transform duration-300 md:translate-x-0 overflow-y-auto custom-scrollbar">
+    <aside id="sidebar"
+        class="sidebar fixed top-0 left-0 h-screen w-72 bg-dark-950 border-r border-dark-800 z-40 transition-transform duration-300 md:translate-x-0 overflow-y-auto custom-scrollbar">
         <div class="p-8">
             <div class="flex items-center space-x-3 mb-12">
-                <div class="w-10 h-10 bg-brand-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-500/20">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+                <div
+                    class="w-10 h-10 bg-brand-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-500/20">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
                 </div>
                 <span class="font-heading font-bold text-2xl text-white tracking-tight">kroxt /></span>
             </div>
@@ -128,19 +152,38 @@
                     <h5 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 px-3">Engine</h5>
                     <div class="space-y-1">
                         <a href="#hero" class="sidebar-link active block px-3 py-2 rounded-lg text-sm">Introduction</a>
-                        <a href="#how-it-works" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">How it Works</a>
-                        <a href="#security" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">Security First</a>
+                        <a href="#how-it-works"
+                            class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">How it Works</a>
+                        <a href="#security"
+                            class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">Security First</a>
                     </div>
                 </div>
 
                 <div>
-                    <h5 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 px-3">Getting Started</h5>
+                    <h5 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 px-3">Getting Started
+                    </h5>
                     <div class="space-y-1">
-                        <a href="docs.html" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">Installation</a>
-                        <a href="docs.html#quickstart" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">Quick Start</a>
-                        <a href="https://github.com/adepoju-oluwatobi/kroxt-example-cjs" target="_blank" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400 flex items-center justify-between">
+                        <a href="docs.html"
+                            class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">Installation</a>
+                        <a href="docs.html#quickstart"
+                            class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">Quick Start</a>
+                        <a href="https://github.com/adepoju-oluwatobi/kroxt-example" target="_blank"
+                            class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400 flex items-center justify-between">
+                            Example (ESM)
+                            <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                </path>
+                            </svg>
+                        </a>
+                        <a href="https://github.com/adepoju-oluwatobi/kroxt-example-cjs" target="_blank"
+                            class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400 flex items-center justify-between">
                             Example (CJS)
-                            <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                </path>
+                            </svg>
                         </a>
                     </div>
                 </div>
@@ -148,8 +191,10 @@
                 <div>
                     <h5 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 px-3">Community</h5>
                     <div class="space-y-1">
-                        <a href="https://github.com/adepoju-oluwatobi/kroxt" target="_blank" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">GitHub</a>
-                        <a href="https://www.npmjs.com/package/kroxt" target="_blank" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">NPM Package</a>
+                        <a href="https://github.com/adepoju-oluwatobi/kroxt" target="_blank"
+                            class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">GitHub</a>
+                        <a href="https://www.npmjs.com/package/kroxt" target="_blank"
+                            class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-400">NPM Package</a>
                     </div>
                 </div>
             </nav>
@@ -159,20 +204,23 @@
     <!-- Main Content -->
     <main class="md:ml-72 min-h-screen pt-24 md:pt-0">
         <div class="max-w-4xl mx-auto px-6 py-12 md:py-24">
-            
+
             <!-- Hero -->
             <section id="hero" class="mb-32">
                 <h1 class="font-heading text-6xl md:text-8xl font-black text-white mb-8 leading-[1.1] tracking-tighter">
                     The Headless <br><span class="text-brand-500">Auth Engine.</span>
                 </h1>
                 <p class="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-2xl mb-12">
-                    A framework-agnostic, modular authentication engine for modern TypeScript applications. Stay in control of your data and your UI.
+                    A framework-agnostic, modular authentication engine for modern TypeScript applications. Stay in
+                    control of your data and your UI.
                 </p>
                 <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
-                    <a href="docs.html" class="w-full sm:w-auto px-8 py-4 bg-brand-500 text-white rounded-xl font-bold text-lg hover:bg-brand-600 transition-all shadow-lg shadow-brand-500/25 text-center">
+                    <a href="docs.html"
+                        class="w-full sm:w-auto px-8 py-4 bg-brand-500 text-white rounded-xl font-bold text-lg hover:bg-brand-600 transition-all shadow-lg shadow-brand-500/25 text-center">
                         Get Started
                     </a>
-                    <div class="flex items-center space-x-3 bg-dark-800 px-6 py-4 rounded-xl border border-dark-700 font-mono text-sm w-full sm:w-auto">
+                    <div
+                        class="flex items-center space-x-3 bg-dark-800 px-6 py-4 rounded-xl border border-dark-700 font-mono text-sm w-full sm:w-auto">
                         <span class="text-brand-500">$</span>
                         <span class="text-slate-300">npm i kroxt</span>
                     </div>
@@ -181,19 +229,22 @@
 
             <!-- How it Works -->
             <section id="how-it-works" class="mb-32">
-                <h2 class="font-heading text-4xl font-black text-white mb-12 text-center">How it Works.</h2>
-                
-                <div class="space-y-20">
+                <h2 class="font-heading text-4xl font-black text-white mb-20 text-center">How it Works.</h2>
+
+                <div class="space-y-32">
                     <!-- Step 1 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                         <div>
-                            <div class="w-12 h-12 bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center font-bold mb-6">1</div>
-                            <h3 class="font-heading text-3xl font-bold text-white mb-4">Define your User</h3>
-                            <p class="text-slate-400 leading-relaxed text-lg">
-                                Start by defining what your user looks like. Kroxt is fully extensible—add <b>roles</b>, <b>school IDs</b>, or <b>metadata</b> with full type safety.
+                            <div
+                                class="w-12 h-12 bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center font-bold mb-6">
+                                1</div>
+                            <h3 class="font-heading text-3xl font-bold text-white mb-6">Define your User</h3>
+                            <p class="text-slate-400 leading-relaxed text-lg mb-8">
+                                Start by defining what your user looks like. Kroxt is fully extensible—add <b>roles</b>,
+                                <b>school IDs</b>, or <b>metadata</b> with full type safety.
                             </p>
                         </div>
-                        <div class="code-block p-6 text-sm">
+                        <div class="code-block text-sm">
                             <pre class="font-mono text-slate-300">
 <span class="text-emerald-500">interface</span> <span class="text-brand-100">MyUser</span> {
   id: <span class="text-emerald-500">string</span>;
@@ -206,24 +257,25 @@
 
                     <!-- Step 2 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                        <div class="order-2 md:order-1">
-                            <div class="code-block p-6 text-sm">
+                        <div class="order-2 md:order-1 min-w-0">
+                            <div class="code-block text-sm">
                                 <pre class="font-mono text-slate-300">
-<span class="text-emerald-500">const</span> <span class="text-brand-100">adapter</span>: AuthAdapter = {
-  createUser: <span class="text-emerald-500">async</span> (data) => {
-    <span class="text-slate-500">// Save to your DB...</span>
-  },
-  findUserByEmail: <span class="text-emerald-500">async</span> (e) => {
-    <span class="text-slate-500">// Find in your DB...</span>
-  }
-};</pre>
+<span class="text-emerald-500">import</span> { createMongoAdapter } 
+  <span class="text-emerald-500">from</span> <span class="text-brand-500">"kroxt/adapters/mongoose"</span>;
+
+<span class="text-slate-500">// Connect to MongoDB in one line</span>
+<span class="text-emerald-500">const</span> <span class="text-brand-100">adapter</span> = <span class="text-brand-500">createMongoAdapter</span>(User);</pre>
                             </div>
                         </div>
                         <div class="order-1 md:order-2">
-                            <div class="w-12 h-12 bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center font-bold mb-6">2</div>
-                            <h3 class="font-heading text-3xl font-bold text-white mb-4">Create the Adapter</h3>
-                            <p class="text-slate-400 leading-relaxed text-lg">
-                                Implement a simple interface to connect Kroxt to your database. Mongoose, Prisma, Drizzle—it works with everything.
+                            <div
+                                class="w-12 h-12 bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center font-bold mb-6">
+                                2</div>
+                            <h3 class="font-heading text-3xl font-bold text-white mb-6">Choose an Adapter</h3>
+                            <p class="text-slate-400 leading-relaxed text-lg mb-8">
+                                Use built-in adapters for <b>MongoDB</b> (Mongoose) or <b>In-Memory</b> storage. More
+                                official adapters (Prisma, Drizzle) are coming soon, or you can implement your own
+                                custom one.
                             </p>
                         </div>
                     </div>
@@ -231,14 +283,18 @@
                     <!-- Step 3 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                         <div>
-                            <div class="w-12 h-12 bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center font-bold mb-6">3</div>
-                            <h3 class="font-heading text-3xl font-bold text-white mb-4">Hook it Up</h3>
-                            <p class="text-slate-400 leading-relaxed text-lg">
-                                Initialize the engine with your adapter. Use the <code>jwt.payload</code> hook to sign custom user data into your tokens.
+                            <div
+                                class="w-12 h-12 bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center font-bold mb-6">
+                                3</div>
+                            <h3 class="font-heading text-3xl font-bold text-white mb-6">Hook it Up</h3>
+                            <p class="text-slate-400 leading-relaxed text-lg mb-8">
+                                Initialize the engine with your adapter. Use the <code>jwt.payload</code> hook to sign
+                                custom user data into your tokens.
                             </p>
                         </div>
-                        <div class="code-block p-6 text-sm">
-                            <pre class="font-mono text-slate-300">
+                        <div class="overflow-hidden min-w-0">
+                            <div class="code-block text-sm">
+                                <pre class="font-mono text-slate-300">
 <span class="text-emerald-500">export const</span> <span class="text-brand-100">auth</span> = createAuth({
   adapter,
   jwt: {
@@ -247,23 +303,27 @@
     })
   }
 });</pre>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Step 4 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                        <div class="order-2 md:order-1">
-                            <div class="code-block p-6 text-sm">
+                        <div class="order-2 md:order-1 overflow-hidden min-w-0">
+                            <div class="code-block text-sm">
                                 <pre class="font-mono text-slate-300">
 <span class="text-emerald-500">const</span> { accessToken } = <span class="text-emerald-500">await</span> auth.<span class="text-brand-500">signup</span>(data, pwd);
 <span class="text-emerald-500">const</span> payload = <span class="text-emerald-500">await</span> auth.<span class="text-brand-500">verifyToken</span>(token);</pre>
                             </div>
                         </div>
                         <div class="order-1 md:order-2">
-                            <div class="w-12 h-12 bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center font-bold mb-6">4</div>
-                            <h3 class="font-heading text-3xl font-bold text-white mb-4">Ship with Confidence</h3>
-                            <p class="text-slate-400 leading-relaxed text-lg">
-                                Use robust methods for signup, login, token rotation, and verification. Kroxt handles hashing, salts, and JWT security for you.
+                            <div
+                                class="w-12 h-12 bg-brand-500/10 text-brand-500 rounded-xl flex items-center justify-center font-bold mb-6">
+                                4</div>
+                            <h3 class="font-heading text-3xl font-bold text-white mb-6">Ship with Confidence</h3>
+                            <p class="text-slate-400 leading-relaxed text-lg mb-8">
+                                Use robust methods for signup, login, token rotation, and verification. Kroxt handles
+                                hashing, salts, and JWT security for you.
                             </p>
                         </div>
                     </div>
@@ -275,48 +335,101 @@
                 <h2 class="font-heading text-4xl font-black text-white mb-12">Built-in Security.</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <div class="flex items-start space-x-4">
-                        <div class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <div
+                            class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
                         </div>
                         <div>
                             <h4 class="font-bold text-white mb-1">Argon2 + Pepper</h4>
-                            <p class="text-sm text-slate-400">Industry leading hashing with hardware-locked pepper support.</p>
+                            <p class="text-sm text-slate-400">Industry leading hashing with hardware-locked pepper
+                                support.</p>
                         </div>
                     </div>
                     <div class="flex items-start space-x-4">
-                        <div class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <div
+                            class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
                         </div>
                         <div>
                             <h4 class="font-bold text-white mb-1">Timing Attack Protection</h4>
-                            <p class="text-sm text-slate-400">Constant-time comparisons and simulated delays for failed logins.</p>
+                            <p class="text-sm text-slate-400">Constant-time comparisons and simulated delays for failed
+                                logins.</p>
                         </div>
                     </div>
                     <div class="flex items-start space-x-4">
-                        <div class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <div
+                            class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
                         </div>
                         <div>
                             <h4 class="font-bold text-white mb-1">Token Rotation</h4>
-                            <p class="text-sm text-slate-400">Automatic refresh token rotation to prevent replay attacks.</p>
+                            <p class="text-sm text-slate-400">Automatic refresh token rotation to prevent replay
+                                attacks.</p>
                         </div>
                     </div>
                     <div class="flex items-start space-x-4">
-                        <div class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <div
+                            class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
                         </div>
                         <div>
                             <h4 class="font-bold text-white mb-1">Zod Validation</h4>
-                            <p class="text-sm text-slate-400">Type-safe configuration and user data validation out of the box.</p>
+                            <p class="text-sm text-slate-400">Type-safe configuration and user data validation out of
+                                the box.</p>
                         </div>
                     </div>
                     <div class="flex items-start space-x-4">
-                        <div class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <div
+                            class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
                         </div>
                         <div>
                             <h4 class="font-bold text-white mb-1">Custom JWT Payloads</h4>
-                            <p class="text-sm text-slate-400">Sign custom user details into the token without losing type safety.</p>
+                            <p class="text-sm text-slate-400">Sign custom user details into the token without losing
+                                type safety.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div
+                            class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white mb-1">Built-in Adapters</h4>
+                            <p class="text-sm text-slate-400">One-line integration for MongoDB (Mongoose) and In-Memory
+                                storage.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div
+                            class="mt-1 w-6 h-6 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white mb-1">Dual ESM/CJS Support</h4>
+                            <p class="text-sm text-slate-400">Native support for both modern ESM and traditional
+                                CommonJS projects.</p>
                         </div>
                     </div>
                 </div>
@@ -327,8 +440,10 @@
                 <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <p>© 2026 Kroxt. Released under the <span class="text-white font-medium">MIT License</span>.</p>
                     <div class="flex space-x-6">
-                        <a href="https://github.com/adepoju-oluwatobi/kroxt" class="hover:text-brand-500 transition-colors">GitHub</a>
-                        <a href="https://www.npmjs.com/package/kroxt" class="hover:text-brand-500 transition-colors">NPM</a>
+                        <a href="https://github.com/adepoju-oluwatobi/kroxt"
+                            class="hover:text-brand-500 transition-colors">GitHub</a>
+                        <a href="https://www.npmjs.com/package/kroxt"
+                            class="hover:text-brand-500 transition-colors">NPM</a>
                         <a href="docs.html" class="hover:text-brand-500 transition-colors">Documentation</a>
                     </div>
                 </div>

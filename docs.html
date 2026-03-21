@@ -228,52 +228,50 @@
                     </div>
                 </section>
 
-                <!-- Step 2: Create Adapter -->
-                <section id="adapter">
+                <!-- Step 2: Choose an Adapter -->
+                <section id="adapter" class="pt-16">
                     <div class="flex items-center mb-6">
                         <span class="step-pill">2</span>
-                        <h2 class="font-heading text-2xl font-bold text-white">Create the Adapter</h2>
+                        <h2 class="font-heading text-2xl font-bold text-white">Choose an Adapter</h2>
                     </div>
                     <p class="text-slate-400 mb-8 leading-relaxed">
-                        The Adapter is like a translator. It tells Kroxt how to talk to your specific database. Here is a complete Mongoose implementation:
+                        Kroxt provides built-in adapters for major databases. For MongoDB, simply pass your Mongoose model to <code>createMongoAdapter</code>.
                     </p>
-                    <div class="code-block">
+                    <div class="code-block mb-12">
                         <div class="code-header">lib/adapter.ts</div>
                         <div class="p-6 overflow-x-auto text-sm leading-relaxed font-mono text-slate-300">
-<pre><span class="text-emerald-500">import type</span> { AuthAdapter } <span class="text-emerald-500">from</span> <span class="text-brand-500">"kroxt/adapter"</span>;
+<pre><span class="text-emerald-500">import</span> { createMongoAdapter } <span class="text-emerald-500">from</span> <span class="text-brand-500">"kroxt/adapters/mongoose"</span>;
 <span class="text-emerald-500">import</span> { User } <span class="text-emerald-500">from</span> <span class="text-brand-500">"../models/user.model.js"</span>;
+ 
+<span class="text-emerald-500">export const</span> <span class="text-brand-100">authAdapter</span> = <span class="text-brand-500">createMongoAdapter</span>(User);</pre>
+                        </div>
+                    </div>
 
-<span class="text-emerald-500">export const</span> <span class="text-brand-100">myAdapter</span>: AuthAdapter&lt;MyUser&gt; = {
+                    <div id="custom-adapter" class="mt-16 p-10 bg-dark-800/50 rounded-3xl border border-dark-700 shadow-2xl">
+                        <h3 class="text-xl font-bold text-brand-100 mb-4">Building a Custom Adapter</h3>
+                        <p class="text-slate-400 mb-6 text-sm">Need to use <b>Prisma</b>, <b>Drizzle</b>, or a custom API? Simply implement the <code>AuthAdapter</code> interface.</p>
+                        <div class="code-block">
+                            <div class="code-header">customAdapter.ts</div>
+                            <div class="p-6 overflow-x-auto text-xs leading-relaxed font-mono text-slate-400">
+<pre><span class="text-emerald-500">import type</span> { AuthAdapter } <span class="text-emerald-500">from</span> <span class="text-brand-500">"kroxt/adapters"</span>;
+
+<span class="text-emerald-500">export const</span> <span class="text-brand-100">myCustomAdapter</span>: AuthAdapter&lt;MyUser&gt; = {
   createUser: <span class="text-emerald-500">async</span> (data) => {
-    <span class="text-emerald-500">const</span> user = <span class="text-emerald-500">await</span> User.<span class="text-brand-500">create</span>(data);
-    <span class="text-emerald-500">const</span> obj = user.<span class="text-brand-500">toObject</span>();
-    <span class="text-emerald-500">return</span> { ...obj, id: obj._id.<span class="text-brand-500">toString</span>() };
+    <span class="text-slate-500">// Your DB logic here...</span>
+    <span class="text-emerald-500">return</span> { ...user, id: user._id.<span class="text-brand-500">toString</span>() };
   },
   findUserByEmail: <span class="text-emerald-500">async</span> (email) => {
-    <span class="text-emerald-500">const</span> user = <span class="text-emerald-500">await</span> User.<span class="text-brand-500">findOne</span>({ email });
-    <span class="text-emerald-500">if</span> (!user) <span class="text-emerald-500">return null</span>;
-    <span class="text-emerald-500">const</span> obj = user.<span class="text-brand-500">toObject</span>();
-    <span class="text-emerald-500">return</span> { ...obj, id: obj._id.<span class="text-brand-500">toString</span>() };
+    <span class="text-slate-500">// Your DB logic here...</span>
   },
-  findUserById: <span class="text-emerald-500">async</span> (id) => {
-    <span class="text-emerald-500">const</span> user = <span class="text-emerald-500">await</span> User.<span class="text-brand-500">findById</span>(id);
-    <span class="text-emerald-500">if</span> (!user) <span class="text-emerald-500">return null</span>;
-    <span class="text-emerald-500">const</span> obj = user.<span class="text-brand-500">toObject</span>();
-    <span class="text-emerald-500">return</span> { ...obj, id: obj._id.<span class="text-brand-500">toString</span>() };
-  },
-  linkOAuthAccount: <span class="text-emerald-500">async</span> (id, provider, providerId) => {
-    <span class="text-emerald-500">await</span> User.<span class="text-brand-500">findByIdAndUpdate</span>(id, {
-      oauthProvider: provider,
-      oauthId: providerId
-    });
-  }
+  <span class="text-slate-500">// ...other methods (findUserById, linkOAuthAccount)</span>
 };</pre>
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 <!-- Step 3: Initialize Engine -->
-                <section id="config">
+                <section id="config" class="pt-16">
                     <div class="flex items-center mb-6">
                         <span class="step-pill">3</span>
                         <h2 class="font-heading text-2xl font-bold text-white">Initialize the Engine</h2>
@@ -284,10 +282,10 @@
                     <div class="code-block">
                         <div class="code-header">lib/auth.ts</div>
                         <div class="p-6 overflow-x-auto text-sm leading-relaxed font-mono text-slate-300">
-<pre><span class="text-emerald-500">import</span> { createAuth } <span class="text-emerald-500">from</span> <span class="text-brand-500">"kroxt"</span>;
-
+<pre><span class="text-emerald-500">import</span> { createAuth } <span class="text-emerald-500">from</span> <span class="text-brand-500">"kroxt/core"</span>;
+ 
 <span class="text-emerald-500">export const</span> <span class="text-brand-100">auth</span> = <span class="text-brand-500">createAuth</span>({
-  adapter: myAdapter,
+  adapter: authAdapter,
   secret: process.env.<span class="text-brand-100">JWT_SECRET</span>,
   jwt: {
     payload: (user, type) => {
@@ -307,17 +305,17 @@
                         <p class="text-slate-400 text-sm mb-4 leading-relaxed">Using a legacy Node.js environment? Kroxt works perfectly with <code>require()</code>.</p>
                         <div class="code-block bg-dark-950/50">
                             <div class="p-4 overflow-x-auto text-xs leading-relaxed font-mono text-slate-400">
-<pre><span class="text-emerald-500">const</span> { createAuth } = <span class="text-emerald-500">require</span>(<span class="text-brand-500">"kroxt"</span>);
-<span class="text-emerald-500">const</span> { myAdapter } = <span class="text-emerald-500">require</span>(<span class="text-brand-500">"./myAdapter"</span>);
-
-<span class="text-emerald-500">const</span> auth = <span class="text-brand-500">createAuth</span>({ adapter: myAdapter, ... });</pre>
+<pre><span class="text-emerald-500">const</span> { createAuth } = <span class="text-emerald-500">require</span>(<span class="text-brand-500">"kroxt/core"</span>);
+<span class="text-emerald-500">const</span> { createMongoAdapter } = <span class="text-emerald-500">require</span>(<span class="text-brand-500">"kroxt/adapters/mongoose"</span>);
+ 
+<span class="text-emerald-500">const</span> auth = <span class="text-brand-500">createAuth</span>({ adapter: <span class="text-brand-500">createMongoAdapter</span>(User), ... });</pre>
                             </div>
                         </div>
                     </div>
                 </section>
 
                 <!-- Step 4: Auth Flows -->
-                <section id="flows">
+                <section id="flows" class="pt-16">
                     <div class="flex items-center mb-6">
                         <span class="step-pill">4</span>
                         <h2 class="font-heading text-2xl font-bold text-white">Use the Auth Flows</h2>
