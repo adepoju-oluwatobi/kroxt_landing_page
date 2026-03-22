@@ -134,15 +134,36 @@
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
+                z-index: 100 !important;
             }
             .sidebar.open {
                 transform: translateX(0);
+            }
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(4px);
+                z-index: 90;
+            }
+            .sidebar.open + .sidebar-overlay {
+                display: block;
+            }
+            section {
+                padding-left: 1.25rem !important;
+                padding-right: 1.25rem !important;
+                overflow-x: hidden;
             }
         }
     </style>
 </head>
 
 <body class="font-sans selection:bg-brand-500 selection:text-white">
+    <div id="overlay" class="sidebar-overlay"></div>
 
     <!-- Mobile Header -->
     <header class="md:hidden fixed top-0 w-full bg-dark-900/80 backdrop-blur-md border-b border-dark-800 z-50 px-6 py-4 flex justify-between items-center">
@@ -158,7 +179,7 @@
     </header>
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar fixed top-0 left-0 h-screen w-72 bg-dark-950 border-r border-dark-800 z-40 transition-transform duration-300 md:translate-x-0 overflow-y-auto custom-scrollbar">
+    <aside id="sidebar" class="sidebar fixed top-0 left-0 h-screen w-72 bg-dark-950 border-r border-dark-800 z-60 transition-transform duration-300 md:translate-x-0 overflow-y-auto custom-scrollbar">
         <div class="p-8">
             <div class="flex items-center space-x-3 mb-12">
                 <a href="index.html" class="flex items-center space-x-3">
@@ -185,6 +206,11 @@
                         <a href="#adapter" class="sidebar-link block px-3 py-2 rounded-lg text-sm">2. Create Adapter</a>
                         <a href="#config" class="sidebar-link block px-3 py-2 rounded-lg text-sm">3. Initialize Engine</a>
                         <a href="#flows" class="sidebar-link block px-3 py-2 rounded-lg text-sm">4. Auth Flows</a>
+                        <div class="px-3 py-2 mt-4 mb-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest italic border-t border-dark-800 pt-4">Framework Ecosystem</div>
+                        <a href="https://github.com/adepoju-oluwatobi/kroxt-examples/tree/main/express" target="_blank" class="sidebar-link block px-3 py-1 rounded-lg text-xs text-brand-500 font-medium flex justify-between">Express Flow <span>→</span></a>
+                        <a href="https://github.com/adepoju-oluwatobi/kroxt-examples/tree/main/fastify" target="_blank" class="sidebar-link block px-3 py-1 rounded-lg text-xs text-amber-500 font-medium flex justify-between">Fastify Flow <span>→</span></a>
+                        <a href="https://github.com/adepoju-oluwatobi/kroxt-examples/tree/main/hono" target="_blank" class="sidebar-link block px-3 py-1 rounded-lg text-xs text-emerald-400 font-medium flex justify-between">Hono Flow <span>→</span></a>
+                        <a href="https://github.com/adepoju-oluwatobi/kroxt-examples" target="_blank" class="sidebar-link block px-3 py-1 mt-4 rounded-lg text-xs text-white font-bold italic flex justify-between uppercase tracking-tighter bg-brand-500/10 border border-brand-500/20">All Examples <span>→</span></a>
                         <a href="#troubleshoot" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-amber-400 font-medium">Troubleshooting</a>
                     </div>
                 </div>
@@ -212,7 +238,7 @@
             <div class="space-y-24">
                 
                 <!-- Jargon Buster -->
-                <section id="newbie" class="p-10 bg-brand-500/5 rounded-3xl border border-brand-500/20 shadow-2xl">
+                <section id="newbie" class="p-6 md:p-10 bg-brand-500/5 rounded-3xl border border-brand-500/20 shadow-2xl overflow-hidden">
                     <h3 class="font-heading text-2xl font-bold text-white mb-6 flex items-center">
                         <span class="mr-3">🐥</span> Jargon Buster
                     </h3>
@@ -285,10 +311,11 @@
                     </p>
 
                     <!-- ORM Tabs -->
-                    <div class="flex space-x-2 mb-8 bg-dark-900/50 p-1 rounded-xl border border-dark-800 w-fit">
+                    <div class="flex space-x-2 mb-8 bg-dark-900/50 p-1 rounded-xl border border-dark-800 w-full md:w-fit overflow-x-auto whitespace-nowrap custom-scrollbar">
                         <button onclick="switchTab('mongo')" class="tab-btn active" id="btn-mongo">Mongoose</button>
                         <button onclick="switchTab('drizzle')" class="tab-btn" id="btn-drizzle">Drizzle</button>
                         <button onclick="switchTab('prisma')" class="tab-btn" id="btn-prisma">Prisma</button>
+                        <button onclick="switchTab('frameworks')" class="tab-btn" id="btn-frameworks">Frameworks</button>
                     </div>
 
                     <div id="tab-content">
@@ -336,6 +363,44 @@
                                 <p class="text-xs text-slate-400">If you get "Module not found" with Prisma on Windows in ESM mode, use <code>createRequire</code> for your Prisma client import.</p>
                             </div>
                         </div>
+
+                        <!-- Frameworks Content -->
+                        <div id="content-frameworks" class="tab-pane hidden">
+                             <div class="mb-6">
+                                <p class="text-sm text-slate-400 leading-relaxed">
+                                    Kroxt is framework-agnostic. We provide production-ready examples for <b>Express</b>, <b>Fastify</b>, and <b>Hono</b>. Each example follows best practices for modular architecture.
+                                </p>
+                             </div>
+                            
+                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                                <a href="https://github.com/adepoju-oluwatobi/kroxt-examples/tree/main/express" class="p-4 bg-brand-500/5 border border-brand-500/20 rounded-xl hover:bg-brand-500/10 transition-all">
+                                    <div class="text-brand-500 font-bold mb-1">Express Examples</div>
+                                    <div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest italic">Node.js Classic</div>
+                                </a>
+                                <a href="https://github.com/adepoju-oluwatobi/kroxt-examples/tree/main/fastify" class="p-4 bg-amber-500/5 border border-amber-500/20 rounded-xl hover:bg-amber-500/10 transition-all">
+                                    <div class="text-amber-500 font-bold mb-1">Fastify Examples</div>
+                                    <div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest italic">High Performance</div>
+                                </a>
+                                <a href="https://github.com/adepoju-oluwatobi/kroxt-examples/tree/main/hono" class="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-xl hover:bg-emerald-500/10 transition-all">
+                                    <div class="text-emerald-400 font-bold mb-1">Hono Examples</div>
+                                    <div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest italic">Modern Edge</div>
+                                </a>
+                             </div>
+
+                             <div class="code-block">
+                                <div class="code-header">Hono Controller Example</div>
+                                <div class="p-6 overflow-x-auto text-sm leading-relaxed font-mono text-slate-300">
+<pre><span class="text-slate-500 italic">// src/controllers/auth.controller.ts</span>
+<span class="text-emerald-500">export class</span> AuthController {
+  <span class="text-emerald-500">static async</span> login(c: <span class="text-brand-100">Context</span>) {
+    <span class="text-emerald-500">const</span> { email, password } = <span class="text-emerald-500">await</span> c.req.<span class="text-brand-500">json</span>();
+    <span class="text-emerald-500">const</span> result = <span class="text-emerald-500">await</span> <span class="text-brand-100">AuthService</span>.<span class="text-brand-100">login</span>(email, password);
+    <span class="text-emerald-500">return</span> c.<span class="text-brand-500">json</span>(result);
+  }
+}</pre>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -371,8 +436,8 @@
                 </section>
 
                 <!-- Troubleshooting -->
-                <section id="troubleshoot" class="pt-16">
-                    <h2 class="font-heading text-3xl font-black text-white mb-10 border-l-4 border-amber-500 pl-6 uppercase tracking-widest italic">Troubleshooting</h2>
+                <section id="troubleshoot" class="pt-16 overflow-hidden">
+                    <h2 class="font-heading text-2xl md:text-3xl font-black text-white mb-10 border-l-4 border-amber-500 pl-6 uppercase tracking-widest italic break-words">Troubleshooting</h2>
                     <div class="space-y-6">
                         <div class="bg-dark-800 p-6 rounded-2xl border border-dark-700">
                             <h4 class="font-bold text-white mb-3 flex items-center">
@@ -393,7 +458,7 @@
                                 <span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-3"></span>
                                 Path Mismatch: passwordHash
                             </h4>
-                            <p class="text-sm text-slate-400 leading-relaxed">Kroxt expects your database field to be named <code>passwordHash</code> ideally. If you name it <code>password</code> in your DB, you may need a mapping in your adapter setup.</p>
+                            <p class="text-sm text-slate-400 leading-relaxed break-words">Kroxt expects your database field to be named <code class="text-brand-100">passwordHash</code> ideally. If you name it <code>password</code> in your DB, you may need a mapping in your adapter setup.</p>
                         </div>
                     </div>
                 </section>
@@ -415,10 +480,20 @@
     <script>
         const menuToggle = document.getElementById('menu-toggle');
         const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
 
-        menuToggle.addEventListener('click', () => {
+        function toggleMenu() {
             sidebar.classList.toggle('open');
-        });
+            overlay.classList.toggle('visible');
+            if (sidebar.classList.contains('open')) {
+                overlay.style.display = 'block';
+            } else {
+                overlay.style.display = 'none';
+            }
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
 
         function switchTab(orm) {
             // Update buttons
@@ -427,7 +502,8 @@
 
             // Update panes
             document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.add('hidden'));
-            document.getElementById('content-' + orm).classList.remove('hidden');
+            const targetPane = document.getElementById('content-' + orm);
+            if (targetPane) targetPane.classList.remove('hidden');
         }
 
         // Close sidebar on link click (mobile)
@@ -435,6 +511,7 @@
             link.addEventListener('click', () => {
                 if (window.innerWidth < 768) {
                     sidebar.classList.remove('open');
+                    overlay.style.display = 'none';
                 }
             });
         });
