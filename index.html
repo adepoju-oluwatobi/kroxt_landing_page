@@ -143,12 +143,15 @@
             </h1>
 
             <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed">
-                Kroxt is a premium, stack-aware authentication engine. Zero-config bootstrapping with <code class="text-white font-mono bg-white/10 px-2 py-1 rounded">npx kroxt init</code>. 
+                Kroxt is a premium, stack-aware authentication engine. Optimized for **Next.js App Router** with zero-config bootstrapping via <code class="text-white font-mono bg-white/10 px-2 py-1 rounded">npx kroxt init</code>. 
             </p>
 
             <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
                 <a href="docs.html" class="w-full sm:w-auto px-8 py-4 glass-panel rounded-xl font-bold text-sm hover:border-white/50 hover:bg-white/5 transition-all">
                     Explore Documentation
+                </a>
+                <a href="https://github.com/kroxt/kroxt-nextjs-mongo" class="w-full sm:w-auto px-8 py-4 glass-panel rounded-xl font-bold text-sm hover:border-white/50 hover:bg-white/5 transition-all flex items-center justify-center gap-2">
+                    <span class="text-xs opacity-50">NEW</span> Next.js Example ↗
                 </a>
                 <a href="https://github.com/kroxt/kroxt" class="w-full sm:w-auto px-8 py-4 bg-white text-black rounded-xl font-bold text-sm hover:bg-slate-200 hover:text-black transition-all">
                     Start Building ↗
@@ -172,22 +175,24 @@
                     <div class="flex items-center space-x-4">
                         <button onclick="switchTab('cli')" id="tab-cli" class="text-[10px] font-bold text-white border-b-2 border-white pb-1 transition-all uppercase tracking-widest">CLI</button>
                         <button onclick="switchTab('config')" id="tab-config" class="text-[10px] font-bold text-slate-500 hover:text-white pb-1 border-b-2 border-transparent transition-all uppercase tracking-widest">Config</button>
+                        <button onclick="switchTab('playground')" id="tab-playground" class="text-[10px] font-bold text-slate-500 hover:text-white pb-1 border-b-2 border-transparent transition-all uppercase tracking-widest">Playground</button>
                     </div>
                 </div>
 
                 <!-- CLI Content -->
-                <div id="content-cli" class="p-8 text-left font-mono text-sm min-h-[300px] flex flex-col justify-center">
+                <div id="content-cli" class="p-8 text-left font-mono text-sm min-h-[350px] flex flex-col justify-center">
                     <div class="flex items-center space-x-3 mb-2">
                         <span class="text-white">❯</span>
                         <span class="text-slate-300">npx <span class="text-white">kroxt init</span></span>
                     </div>
                     <div class="ml-6 space-y-1 text-slate-500 text-[12px]">
                         <p>? Choose your database adapter: <span class="text-emerald-400">mongoose</span></p>
+                        <p>? Detected framework: <span class="text-blue-400">Next.js (App Router)</span></p>
                         <p>? Enable rate limiting defensive layer? <span class="text-emerald-400">Yes</span></p>
                         <p>? Create a boilerplate User model? <span class="text-emerald-400">Yes</span></p>
-                        <p class="text-white mt-4">✔ Created: src/lib/kroxt/auth.ts</p>
-                        <p class="text-white">✔ Created: src/lib/kroxt/user.model.ts</p>
-                        <p class="text-white">✔ Installed: kroxt, mongoose, dotenv</p>
+                        <p class="text-white mt-4">✔ Created: lib/kroxt/auth.ts</p>
+                        <p class="text-white">✔ Created: app/api/auth/login/route.ts</p>
+                        <p class="text-white">✔ Installed: kroxt, mongoose, jose</p>
                     </div>
                 </div>
 
@@ -218,17 +223,49 @@
     requireUppercase: <span class="text-slate-200">true</span>,
     requireSpecialCharacter: <span class="text-slate-200">true</span>
   },
- 
-  jwt: {
-    payload: (user, type) => {
-      <span class="text-slate-500 italic">// Sign custom metadata into your JWTs securely</span>
-      <span class="text-slate-200">if</span> (type === <span class="text-white">"access"</span>) {
-        <span class="text-slate-200">return</span> { role: user.role, schoolId: user.schoolId };
-      }
-      <span class="text-slate-200">return</span> {};
-    }
-  }
+  
+  <span class="text-slate-500 italic">// Modular Social Auth</span>
+  providers: [
+    GitHub({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET
+    })
+  ]
 });</pre>
+                </div>
+
+                <!-- Playground Content -->
+                <div id="content-playground" class="hidden p-8 text-left font-mono text-[12px] h-[350px]">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+                        <div class="space-y-4">
+                            <p class="text-slate-400 uppercase text-[10px] tracking-widest font-bold">Session Simulation</p>
+                            <div class="space-y-2">
+                                <label class="block text-slate-500 text-[10px]">USER_ROLE</label>
+                                <select onchange="updateJWT()" id="play-role" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white outline-none focus:border-white/30 transition-all">
+                                    <option value="admin">Admin</option>
+                                    <option value="user" selected>User</option>
+                                    <option value="moderator">Moderator</option>
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-slate-500 text-[10px]">SESSION_EXPIRY</label>
+                                <input type="text" value="15m" disabled class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-slate-500 cursor-not-allowed">
+                            </div>
+                            <button onclick="simulateLogin()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-slate-200 transition-all mt-4">
+                                SIMULATE LOGIN
+                            </button>
+                        </div>
+                        <div class="bg-black/40 rounded-xl p-6 border border-white/5 overflow-hidden flex flex-col">
+                            <p class="text-slate-400 uppercase text-[10px] tracking-widest font-bold mb-4">Decoded JWT Payload</p>
+                            <pre id="jwt-payload" class="text-emerald-400/80 leading-relaxed font-mono text-[11px] whitespace-pre-wrap">
+{
+  "sub": "user_01HM...",
+  "role": "user",
+  "iat": 1712247967,
+  "exp": 1712248867
+}</pre>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -245,9 +282,9 @@
                 <!-- Feature 1 -->
                 <div class="glass-card p-10 rounded-[2.5rem] text-left group hover:bg-white/5 transition-all">
                     <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 text-white font-heading font-black text-xl shadow-lg">01</div>
-                    <h4 class="text-white font-heading font-bold text-2xl mb-4 italic">Stack Agnostic</h4>
+                    <h4 class="text-white font-heading font-bold text-2xl mb-4 italic">Next.js Optimized</h4>
                     <p class="text-slate-500 text-sm leading-relaxed font-light">
-                        First-class support for Next.js, Nuxt, SvelteKit, Astro, Hono, Express, Koa, and Fastify—built organically from standard TypeScript.
+                        First-class support for Next.js App Router. Use standard Route Handlers and Middleware with zero latency and full type safety.
                     </p>
                 </div>
 
@@ -265,7 +302,7 @@
                     <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 text-white font-heading font-black text-xl shadow-lg">03</div>
                     <h4 class="text-white font-heading font-bold text-2xl mb-4 italic">Global Revocation</h4>
                     <p class="text-slate-500 text-sm leading-relaxed font-light">
-                        Password-Linked Tokens natively embed hash fragments. Change a password to instantly invalidate all hijacked sessions.
+                        Atomic <code>sessionVersion</code> counter invalidates sessions globally. Change a password or force-logout all devices instantly.
                     </p>
                 </div>
 
@@ -315,26 +352,52 @@
 
     <script>
         function switchTab(tab) {
-            const cliTab = document.getElementById('tab-cli');
-            const configTab = document.getElementById('tab-config');
-            const cliContent = document.getElementById('content-cli');
-            const configContent = document.getElementById('content-config');
+            const tabs = ['cli', 'config', 'playground'];
+            tabs.forEach(t => {
+                const tabEl = document.getElementById(`tab-${t}`);
+                const contentEl = document.getElementById(`content-${t}`);
+                if (t === tab) {
+                    tabEl.classList.add('text-white', 'border-white');
+                    tabEl.classList.remove('text-slate-500', 'border-transparent');
+                    contentEl.classList.remove('hidden');
+                } else {
+                    tabEl.classList.remove('text-white', 'border-white');
+                    tabEl.classList.add('text-slate-500', 'border-transparent');
+                    contentEl.classList.add('hidden');
+                }
+            });
+        }
 
-            if (tab === 'cli') {
-                cliTab.classList.add('text-white', 'border-white');
-                cliTab.classList.remove('text-slate-500', 'border-transparent');
-                configTab.classList.remove('text-white', 'border-white');
-                configTab.classList.add('text-slate-500', 'border-transparent');
-                cliContent.classList.remove('hidden');
-                configContent.classList.add('hidden');
-            } else {
-                configTab.classList.add('text-white', 'border-white');
-                configTab.classList.remove('text-slate-500', 'border-transparent');
-                cliTab.classList.remove('text-white', 'border-white');
-                cliTab.classList.add('text-slate-500', 'border-transparent');
-                configContent.classList.remove('hidden');
-                cliContent.classList.add('hidden');
-            }
+        function updateJWT() {
+            const role = document.getElementById('play-role').value;
+            const payload = {
+                sub: "user_01HM" + Math.random().toString(16).slice(2, 6).toUpperCase(),
+                role: role,
+                iat: Math.floor(Date.now() / 1000),
+                exp: Math.floor(Date.now() / 1000) + 900
+            };
+            document.getElementById('jwt-payload').textContent = JSON.stringify(payload, null, 2);
+        }
+
+        function simulateLogin() {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = "AUTHENTICATING...";
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                updateJWT();
+                btn.textContent = "SUCCESS!";
+                btn.classList.remove('bg-white');
+                btn.classList.add('bg-emerald-500', 'text-white');
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.add('bg-white');
+                    btn.classList.remove('bg-emerald-500', 'text-white');
+                    btn.disabled = false;
+                }, 2000);
+            }, 800);
         }
     </script>
 </body>
